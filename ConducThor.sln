@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConducThor_Client", "ConducThor_Client\ConducThor_Client.csproj", "{CF226015-08DA-4AFB-BA1F-F10B1A6B8185}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConducThor_Server", "ConducThor_Server\ConducThor_Server.csproj", "{9C7736E1-6317-4FF6-9233-A0D424D3E541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConducThor_Shared", "ConducThor_Shared\ConducThor_Shared.csproj", "{776C4060-CF56-4BFE-90FD-1FAEB3EB3650}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF226015-08DA-4AFB-BA1F-F10B1A6B8185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF226015-08DA-4AFB-BA1F-F10B1A6B8185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF226015-08DA-4AFB-BA1F-F10B1A6B8185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF226015-08DA-4AFB-BA1F-F10B1A6B8185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C7736E1-6317-4FF6-9233-A0D424D3E541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C7736E1-6317-4FF6-9233-A0D424D3E541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C7736E1-6317-4FF6-9233-A0D424D3E541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C7736E1-6317-4FF6-9233-A0D424D3E541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776C4060-CF56-4BFE-90FD-1FAEB3EB3650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776C4060-CF56-4BFE-90FD-1FAEB3EB3650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776C4060-CF56-4BFE-90FD-1FAEB3EB3650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776C4060-CF56-4BFE-90FD-1FAEB3EB3650}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
