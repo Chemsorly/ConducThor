@@ -28,7 +28,6 @@ namespace ConducThor_Server
             _viewmodel = new MainWindowViewmodel();
             this.DataContext = _viewmodel;
             InitializeComponent();
-            
             _viewmodel.Initialize();
         }
     }

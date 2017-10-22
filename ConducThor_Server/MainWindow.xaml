@@ -8,6 +8,28 @@
         mc:Ignorable="d"
         Title="ConducThor" Height="600" Width="800" GlowBrush="Black">
     <Grid>
-        
+        <mahapps:MetroTabControl >
+            <mahapps:MetroTabItem Header="Clients">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Background="{StaticResource AccentColorBrush4}">
+                        <TextBlock Text="Connected Clients: 0 "/>
+                        <TextBlock Text="Registered Clients: 0 "/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding ClientList}" IsReadOnly="True">
+                        
+                    </DataGrid>
+                </Grid>
+            </mahapps:MetroTabItem>
+            <mahapps:MetroTabItem Header="Command Queue">
+
+            </mahapps:MetroTabItem>
+            <mahapps:MetroTabItem Header="Settings">
+
+            </mahapps:MetroTabItem>
+        </mahapps:MetroTabControl>
     </Grid>
 </mahapps:MetroWindow>

@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ConducThor_Shared;
 using Microsoft.AspNet.SignalR.Client;
+using ConducThor_Shared.Connection;
+using ConducThor_Shared.Enums;
 
 namespace ConducThor_Client.Client
 {
     class SignalRManager : INotifyPropertyChanged
     {
         public ConnectionState ConnectionState => _connection.State;
+
+        private IHubProxy _hub;
 
         private Microsoft.AspNet.SignalR.Client.HubConnection _connection;
 
@@ -28,9 +33,15 @@ namespace ConducThor_Client.Client
             _connection.Error += delegate(Exception ex) { LogEvent?.Invoke(ex.Message); };
             _connection.Reconnecting += delegate() { LogEvent?.Invoke("reconnecting"); };
             _connection.Closed += delegate () { LogEvent?.Invoke("closed"); };
+            _hub = _connection.CreateHubProxy("CommHub");
+            _hub.On("Ping", () =>
+            {
+                _hub.Invoke("Pong", new ClientStatus() {IsWorking = false, OS = OSEnum.Windows});
+            });
             _connection.Start().Wait();
 
             LogEvent?.Invoke("hub started");
+            _hub.Invoke("Connect");
         }
 
         private void Connection_Received(string obj)
