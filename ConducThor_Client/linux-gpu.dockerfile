@@ -1,9 +1,10 @@
 FROM chemsorly/keras-cntk:latest-ubuntu-py2-gpu
 SHELL ["/bin/bash", "-c"]
 
-ARG CONDUCTHOR_VERSION="dev"
-ARG CONDUCTHOR_OS="ubuntu"
-ARG CONDUCTHOR_TYPE="cpu"
+ENV CONDUCTHOR_VERSION="dev"
+ENV CONDUCTHOR_OS="ubuntu"
+ENV CONDUCTHOR_TYPE="cpu"
+ENV CONDUCTHOR_HOST=""
 
 # Install .NET Core
 RUN apt-get update && apt-get -y install apt-transport-https curl
@@ -15,6 +16,5 @@ RUN apt-get update && apt-get -y install dotnet-dev-1.1.4
 # run app
 COPY 'bin/Debug/netcoreapp1.1/publish/' 'root/app'  
 WORKDIR 'root/app'
-
 
 ENTRYPOINT dotnet ConducThor_Client.dll

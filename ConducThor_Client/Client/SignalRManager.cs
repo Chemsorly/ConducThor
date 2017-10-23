@@ -26,22 +26,30 @@ namespace ConducThor_Client.Client
         public void Initialize(String pEndpoint)
         {
             _connection = new HubConnection(pEndpoint);
-
             _connection.Received += Connection_Received;
             _connection.StateChanged += delegate(StateChange obj){OnPropertyChanged(nameof(ConnectionState)); LogEvent?.Invoke($"state changed from {obj.OldState} to {obj.NewState}"); };
             _connection.Received += delegate(String s) { LogEvent?.Invoke(s); };
             _connection.Error += delegate(Exception ex) { LogEvent?.Invoke(ex.Message); };
             _connection.Reconnecting += delegate() { LogEvent?.Invoke("reconnecting"); };
-            _connection.Closed += delegate () { LogEvent?.Invoke("closed"); };
+            _connection.Reconnected += delegate { _hub.Invoke("Connect"); LogEvent?.Invoke("reconnected"); };
+            _connection.Closed += delegate () {
+                LogEvent?.Invoke("closed... restarting...");
+                Initialize(pEndpoint);
+            };
+            Connect();
+        }
+
+        private void Connect()
+        {
             _hub = _connection.CreateHubProxy("CommHub");
             _hub.On("Ping", () =>
             {
-                _hub.Invoke("Pong", new ClientStatus() {IsWorking = false, OS = OSEnum.Windows});
+                _hub.Invoke("Pong", new ClientStatus() { IsWorking = false, OS = OSEnum.Windows });
             });
             _connection.Start().Wait();
-
-            LogEvent?.Invoke("hub started");
+            LogEvent?.Invoke("Hub started");
             _hub.Invoke("Connect");
+            LogEvent?.Invoke("Connected to hub");
         }
 
         private void Connection_Received(string obj)

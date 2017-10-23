@@ -1,9 +1,10 @@
 FROM chemsorly/keras-cntk:latest-windows-py2-cpu
 SHELL ["powershell"]
 
-ARG CONDUCTHOR_VERSION="dev"
-ARG CONDUCTHOR_OS="windows"
-ARG CONDUCTHOR_TYPE="cpu"
+ENV CONDUCTHOR_VERSION="dev"
+ENV CONDUCTHOR_OS="windows"
+ENV CONDUCTHOR_TYPE="cpu"
+ENV CONDUCTHOR_HOST=""
 
 # Install .NET Core
 ENV DOTNET_VERSION 1.1.4
@@ -18,6 +19,5 @@ RUN setx /M PATH $($Env:PATH + ';' + $Env:ProgramFiles + '\dotnet')
 # run app
 COPY '.\bin\Debug\netcoreapp1.1\publish\' 'C:\\app\\' 
 WORKDIR 'C:\\app\\'
-
 
 ENTRYPOINT dotnet .\ConducThor_Client.dll

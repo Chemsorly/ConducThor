@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ConducThor_Client.Client;
 
@@ -11,13 +12,20 @@ namespace ConducThor_Client
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World2!");
+            //how to run with args: dotnet -- --help where "help" is the arg
 
+            if (!args.Any())
+            {
+                Console.WriteLine("No args specified");
+                return;
+            }
+
+            Console.WriteLine($"Target host: {args[0]}");
             Task.Factory.StartNew(() =>
             {
                 _client = new SignalRManager();
                 _client.LogEvent += _client_LogEvent;
-                _client.Initialize("http://localhost:8080/signalr");
+                _client.Initialize($"http://{CleanHoststring(args[0])}/signalr");
             });
             Console.ReadKey();
         }
@@ -25,6 +33,12 @@ namespace ConducThor_Client
         private static void _client_LogEvent(string message)
         {
             Console.WriteLine(message);
+        }
+
+        private static String CleanHoststring(String pInput)
+        {
+            //remove http://, https:// 
+            return pInput.Replace("http://", String.Empty).Replace("https://", String.Empty);
         }
     }
 }
