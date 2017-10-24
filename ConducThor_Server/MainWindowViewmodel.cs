@@ -26,11 +26,19 @@ namespace ConducThor_Server
             ClientList = new ObservableCollection<ClientViewmodel>();
 
             _signalrmanager = new SignalRManager();
-            _signalrmanager.NewClientEvent += pClient =>
+            _signalrmanager.NewClientEvent += pClientID =>
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Add(pClient);
+                    this.ClientList.Add(new ClientViewmodel() {ID = pClientID });
+                    //OnPropertyChanged(String.Empty);
+                });
+            };
+            _signalrmanager.ClientDisconnectedEvent += pClientID =>
+            {
+                dispatcher.Invoke(() =>
+                {
+                    this.ClientList.Remove(this.ClientList.First(t => t.ID == pClientID));
                     //OnPropertyChanged(String.Empty);
                 });
             };
@@ -39,6 +47,9 @@ namespace ConducThor_Server
             OnPropertyChanged(String.Empty);
         }
 
+
+        #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -46,5 +57,6 @@ namespace ConducThor_Server
         {
               PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

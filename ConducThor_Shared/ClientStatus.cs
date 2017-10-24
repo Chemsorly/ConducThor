@@ -8,7 +8,11 @@ namespace ConducThor_Shared
     public class ClientStatus
     {
         public bool IsWorking { get; set; }
+        //public int LastEpochDuration { get; set; }
+        //public int CurrentEpoch { get; set; }
+        //public String CurrentWorkParameters { get; set; }
+        
 
-        public OSEnum OS { get; set; }
+        
     }
 }

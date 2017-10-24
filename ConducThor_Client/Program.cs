@@ -13,17 +13,20 @@ namespace ConducThor_Client
         static void Main(string[] args)
         {
             //how to run with args: dotnet -- --help where "help" is the arg
-
             if (!args.Any())
             {
                 Console.WriteLine("No args specified");
                 return;
             }
 
+            //fetch machine data from env variables
+            var machinedata = Machine.Machine.GetMachineData();
+
+            //start
             Console.WriteLine($"Target host: {args[0]}");
             Task.Factory.StartNew(() =>
             {
-                _client = new SignalRManager();
+                _client = new SignalRManager(machinedata);
                 _client.LogEvent += _client_LogEvent;
                 _client.Initialize($"http://{CleanHoststring(args[0])}/signalr");
             });

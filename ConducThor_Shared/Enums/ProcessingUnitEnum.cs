@@ -4,8 +4,8 @@ using System.Text;
 
 namespace ConducThor_Shared.Enums
 {
-    public enum OSEnum
+    public enum ProcessingUnitEnum
     {
-        undefined, Windows, Ubuntu
+        undefined, CPU, GPU
     }
 }

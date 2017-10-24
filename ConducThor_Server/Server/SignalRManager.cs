@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using ConducThor_Server.Model;
+using ConducThor_Shared;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 
@@ -15,18 +16,20 @@ namespace ConducThor_Server.Server
     {
         private IDisposable _signalrapp;
 
-        public delegate void NewClient(ClientViewmodel pClient);
-        public event NewClient NewClientEvent;
+        public delegate void NewClient(String pClientID);
+        public delegate void ClientUpdated(Client pClient);
+        public delegate void ClientDisconnected(String pClientID);
 
-        public delegate void ClientUpdated(ClientViewmodel pClient);
         public event ClientUpdated ClientUpdatedEvent;
-
-        private System.Timers.Timer _testtimer;
+        public event NewClient NewClientEvent;
+        public event ClientDisconnected ClientDisconnectedEvent;
 
         public void Initialize()
         {
             CommHub.NewClientEvent += NotifyNewClientEvent;
             CommHub.ClientUpdatedEvent += NotifyClientUpdatedEvent;
+            CommHub.ClientDisconnectedEvent += id => ClientDisconnectedEvent?.Invoke(id);
+            CommHub.MachineDataReceivedEvent += CommHubOnMachineDataReceivedEvent;
 
             try
             {
@@ -36,25 +39,19 @@ namespace ConducThor_Server.Server
             {
                 
             }
-
-            _testtimer = new System.Timers.Timer();
-            _testtimer.Interval = 10000;
-            _testtimer.AutoReset = true;
-            _testtimer.Elapsed += delegate(object sender, ElapsedEventArgs args)
-                {
-                    CommHub.HubContext.Clients.All.Ping();
-                };
-            _testtimer.Start();
-
-            //NotifyNewClientEvent(new ClientViewmodel() {ID = "subtest"});
         }
 
-        private void NotifyNewClientEvent(ClientViewmodel pClient)
+        private void CommHubOnMachineDataReceivedEvent(string pClientId, MachineData pMachineData)
         {
-            NewClientEvent?.Invoke(pClient);
+            
         }
 
-        private void NotifyClientUpdatedEvent(ClientViewmodel pClient)
+        private void NotifyNewClientEvent(String pClientID)
+        {
+            NewClientEvent?.Invoke(pClientID);
+        }
+
+        private void NotifyClientUpdatedEvent(Client pClient)
         {
             ClientUpdatedEvent?.Invoke(pClient);
         }

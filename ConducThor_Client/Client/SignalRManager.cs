@@ -15,12 +15,15 @@ namespace ConducThor_Client.Client
         public ConnectionState ConnectionState => _connection.State;
 
         private IHubProxy _hub;
-
         private Microsoft.AspNet.SignalR.Client.HubConnection _connection;
+        private MachineData _machineData;
 
-        public SignalRManager()
+        public delegate void LogEventHandler(String message);
+        public event LogEventHandler LogEvent;
+
+        public SignalRManager(MachineData pMachineData)
         {
-            
+            _machineData = pMachineData;
         }
 
         public void Initialize(String pEndpoint)
@@ -31,7 +34,7 @@ namespace ConducThor_Client.Client
             _connection.Received += delegate(String s) { LogEvent?.Invoke(s); };
             _connection.Error += delegate(Exception ex) { LogEvent?.Invoke(ex.Message); };
             _connection.Reconnecting += delegate() { LogEvent?.Invoke("reconnecting"); };
-            _connection.Reconnected += delegate { _hub.Invoke("Connect"); LogEvent?.Invoke("reconnected"); };
+            _connection.Reconnected += delegate { _hub.Invoke("Connect", _machineData); LogEvent?.Invoke("reconnected"); };
             _connection.Closed += delegate () {
                 LogEvent?.Invoke("closed... restarting...");
                 Initialize(pEndpoint);
@@ -39,16 +42,12 @@ namespace ConducThor_Client.Client
             Connect();
         }
 
-        private void Connect()
-        {
+        private void Connect(){
             _hub = _connection.CreateHubProxy("CommHub");
-            _hub.On("Ping", () =>
-            {
-                _hub.Invoke("Pong", new ClientStatus() { IsWorking = false, OS = OSEnum.Windows });
-            });
+
             _connection.Start().Wait();
             LogEvent?.Invoke("Hub started");
-            _hub.Invoke("Connect");
+            _hub.Invoke("Connect", _machineData);
             LogEvent?.Invoke("Connected to hub");
         }
 
@@ -56,10 +55,7 @@ namespace ConducThor_Client.Client
         {
             LogEvent?.Invoke($"Received message from hub: {obj}");
         }
-
-        public delegate void LogEventHandler(String message);
-        public event LogEventHandler LogEvent;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -16,8 +16,13 @@ namespace ConducThor_Server.Server
     {
         static IHubContext<IClient> _context = null;
 
+        public delegate void MachineDataReceived(String pClientID, MachineData pMachineData);
+
         public static event SignalRManager.NewClient NewClientEvent;
         public static event SignalRManager.ClientUpdated ClientUpdatedEvent;
+        public static event SignalRManager.ClientDisconnected ClientDisconnectedEvent;
+        public static event MachineDataReceived MachineDataReceivedEvent;
+
 
         /// <summary>
         /// Context instance to access client connections to broadcast to
@@ -33,27 +38,27 @@ namespace ConducThor_Server.Server
             }
         }
 
-        /// <summary>
-        /// answer function for Ping
-        /// </summary>
-        public void Pong(ClientStatus pStatus)
+        public override Task OnConnected()
         {
-            Console.WriteLine("PONG");
+            NewClientEvent?.Invoke(this.Context.ConnectionId);
+            return base.OnConnected();
         }
 
-        public void Connect()
+        public override Task OnReconnected()
         {
-            NotifyNewClientEvent(new ClientViewmodel() {ID = "test", Status = true});
+            NewClientEvent?.Invoke(this.Context.ConnectionId);
+            return base.OnReconnected();
         }
 
-        public void NotifyNewClientEvent(ClientViewmodel pClient)
+        public override Task OnDisconnected(bool stopCalled)
         {
-            NewClientEvent?.Invoke(pClient);
+            ClientDisconnectedEvent?.Invoke(this.Context.ConnectionId);
+            return base.OnDisconnected(stopCalled);
         }
 
-        public void NotifyClientUpdatedEvent(ClientViewmodel pClient)
+        public void Connect(MachineData pMachineData)
         {
-            ClientUpdatedEvent?.Invoke(pClient);
+            MachineDataReceivedEvent?.Invoke(this.Context.ConnectionId,pMachineData);
         }
     }
 }
