@@ -70,5 +70,5 @@ client-deploy-windows:
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
 
-after-script:
+after_script:
     - powershell docker rmi $(docker images -q -f dangling=true) -f
