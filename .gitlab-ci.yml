@@ -42,7 +42,7 @@ client-build-windows:
     script:
     - cd ConducThor_Client
     - dotnet publish
-    - docker build -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
     - powershell docker rmi $(docker images -q -f dangling=true) -f
 
@@ -69,7 +69,7 @@ client-deploy-windows:
     script: 
     - cd ConducThor_Client
     - dotnet publish
-    - docker build -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
     - powershell docker rmi $(docker images -q -f dangling=true) -f
