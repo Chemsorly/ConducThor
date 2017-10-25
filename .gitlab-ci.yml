@@ -31,8 +31,8 @@ server-build:
         --build-arg MSBUILD_ARGS=/p:ApplicationVersion=%PROJECT_VERSION%.%CI_BUILD_ID%;Configuration=Release;PublishDir=C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\;InstallUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/;UpdateUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/
         --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
         -f build.Dockerfile 
-        -t chemsorly/ConducThor_Server:latest . '
-    - docker rmi git.chemsorly.com/chemsorly/ConducThor_Server -f
+        -t chemsorly/conducthor . '
+    - docker rmi git.chemsorly.com/chemsorly/conducthor -f
     - powershell docker rmi $(docker images -q -f dangling=true) -f
     
 client-build-windows:
@@ -57,9 +57,9 @@ server-deploy:
         --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
         -f build.Dockerfile 
         -t chemsorly/ConducThor_Server:latest . '
-    - docker create --name %ASSETCONTAINER_NAME% git.chemsorly.com/chemsorly/ConducThor_Server
+    - docker create --name %ASSETCONTAINER_NAME% chemsorly/conducthor
     - docker cp %ASSETCONTAINER_NAME%:C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\ C:\\Gitlab-Releases\\ConducThor_Server\\
-    - docker rmi git.chemsorly.com/chemsorly/ConducThor_Server -f
+    - docker rmi chemsorly/conducthor -f
     - powershell docker rmi $(docker images -q -f dangling=true) -f
     
 client-deploy-windows:
