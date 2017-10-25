@@ -26,22 +26,33 @@ namespace ConducThor_Server
             ClientList = new ObservableCollection<ClientViewmodel>();
 
             _signalrmanager = new SignalRManager();
-            _signalrmanager.NewClientEvent += pClientID =>
+            _signalrmanager.NewClientEvent += pClient =>
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Add(new ClientViewmodel() {ID = pClientID });
-                    //OnPropertyChanged(String.Empty);
+                    this.ClientList.Add(new ClientViewmodel() {ID = pClient.ID });
                 });
             };
-            _signalrmanager.ClientDisconnectedEvent += pClientID =>
+            _signalrmanager.ClientDisconnectedEvent += pClient =>
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Remove(this.ClientList.First(t => t.ID == pClientID));
-                    //OnPropertyChanged(String.Empty);
+                    this.ClientList.Remove(this.ClientList.First(t => t.ID == pClient.ID));
                 });
             };
+            _signalrmanager.ClientUpdatedEvent += delegate(Client pClient)
+            {
+                dispatcher.Invoke(() =>
+                {
+                    var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
+                    if (client != null)
+                    {
+                        client.UpdateValues(pClient);
+                    }
+                });
+            };
+
+
             _signalrmanager.Initialize();
 
             OnPropertyChanged(String.Empty);

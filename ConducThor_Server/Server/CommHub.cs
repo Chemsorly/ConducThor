@@ -15,12 +15,12 @@ namespace ConducThor_Server.Server
     public class CommHub : Hub<IClient>
     {
         static IHubContext<IClient> _context = null;
-
+        public delegate void NewClient(String pClientID);
+        public delegate void ClientDisconnected(String pClientID);
         public delegate void MachineDataReceived(String pClientID, MachineData pMachineData);
 
-        public static event SignalRManager.NewClient NewClientEvent;
-        public static event SignalRManager.ClientUpdated ClientUpdatedEvent;
-        public static event SignalRManager.ClientDisconnected ClientDisconnectedEvent;
+        public static event NewClient NewClientEvent;
+        public static event ClientDisconnected ClientDisconnectedEvent;
         public static event MachineDataReceived MachineDataReceivedEvent;
 
 

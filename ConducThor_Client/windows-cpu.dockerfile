@@ -4,7 +4,7 @@ SHELL ["powershell"]
 ENV CONDUCTHOR_VERSION="dev"
 ENV CONDUCTHOR_OS="windows"
 ENV CONDUCTHOR_TYPE="cpu"
-ENV CONDUCTHOR_HOST=""
+ARG CONDUCTHOR_HOST=""
 
 # Install .NET Core
 ENV DOTNET_VERSION 1.1.4
@@ -20,4 +20,4 @@ RUN setx /M PATH $($Env:PATH + ';' + $Env:ProgramFiles + '\dotnet')
 COPY '.\bin\Debug\netcoreapp1.1\publish\' 'C:\\app\\' 
 WORKDIR 'C:\\app\\'
 
-ENTRYPOINT dotnet .\ConducThor_Client.dll
+ENTRYPOINT dotnet .\ConducThor_Client.dll $Env:CONDUCTHOR_HOST

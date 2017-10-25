@@ -44,6 +44,13 @@ namespace ConducThor_Server.Model
             set { _processingUnit = value; OnPropertyChanged(); }
         }
 
+        public void UpdateValues(Client pClient)
+        {
+            ContainerVersion = pClient.ContainerVersion;
+            OperatingSystem = pClient.OperatingSystem;
+            ProcessingUnit = pClient.ProcessingUnit;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
