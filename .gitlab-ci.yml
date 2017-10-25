@@ -1,0 +1,75 @@
+variables:
+    ASSETCONTAINER_NAME: "lstm-assets-$CI_BUILD_REF"
+
+stages:
+    - build
+    - deploy
+
+before_script:
+    - echo %CI_BUILD_ID%
+    - echo %CI_BUILD_REF%
+    - echo %CI_BUILD_REF_NAME%
+    - echo %CI_BUILD_REPO%
+    - echo %CI_BUILD_TAG%
+    - echo %CI_BUILD_NAME%
+    - echo %CI_BUILD_STAGE%
+    - echo %CI_BUILD_TRIGGERED%
+    - echo %CI_PROJECT_DIR%
+    - echo %CI_PROJECT_ID%
+    - echo %CI_SERVER%
+    - echo %CI_SERVER_NAME%
+    - echo %CI_SERVER_REVISION%
+    - echo %CI_SERVER_VERSION%
+  
+server-build:
+    stage: build
+    only: 
+    - branches
+    script:
+    - 'docker build 
+        --build-arg MSBUILD_PROJECT=ConducThor.sln
+        --build-arg MSBUILD_ARGS=/p:ApplicationVersion=%PROJECT_VERSION%.%CI_BUILD_ID%;Configuration=Release;PublishDir=C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\;InstallUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/;UpdateUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/
+        --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
+        -f build.Dockerfile 
+        -t chemsorly/conducthor . '
+    - docker rmi git.chemsorly.com/chemsorly/conducthor -f
+    - powershell docker rmi $(docker images -q -f dangling=true) -f
+    
+client-build-windows:
+    stage: build
+    only:
+    - branches
+    script:
+    - cd ConducThor_Client
+    - dotnet publish
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
+    - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
+    - powershell docker rmi $(docker images -q -f dangling=true) -f
+
+server-deploy:
+    stage: deploy
+    only:
+    - master
+    script:
+    - 'docker build 
+        --build-arg MSBUILD_PROJECT=ConducThor.sln
+        --build-arg MSBUILD_ARGS=/p:ApplicationVersion=%PROJECT_VERSION%.%CI_BUILD_ID%;Configuration=Release;PublishDir=C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\;InstallUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/;UpdateUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/
+        --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
+        -f build.Dockerfile 
+        -t chemsorly/ConducThor_Server:latest . '
+    - docker create --name %ASSETCONTAINER_NAME% chemsorly/conducthor
+    - docker cp %ASSETCONTAINER_NAME%:C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\ C:\\Gitlab-Releases\\ConducThor_Server\\
+    - docker rmi chemsorly/conducthor -f
+    - powershell docker rmi $(docker images -q -f dangling=true) -f
+    
+client-deploy-windows:
+    stage: deploy
+    only:
+    - master
+    script: 
+    - cd ConducThor_Client
+    - dotnet publish
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
+    - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
+    - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
+    - powershell docker rmi $(docker images -q -f dangling=true) -f
