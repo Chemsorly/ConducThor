@@ -7,6 +7,12 @@
         xmlns:mahapps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="ConducThor" Height="600" Width="800" GlowBrush="Black">
+    <mahapps:MetroWindow.RightWindowCommands>
+        <mahapps:WindowCommands>
+            <TextBlock x:Name="_txtblock_updateavailable" Text="{Binding VersionStatus}"/>
+        </mahapps:WindowCommands>
+    </mahapps:MetroWindow.RightWindowCommands>
+
     <Grid>
         <mahapps:MetroTabControl >
             <mahapps:MetroTabItem Header="Clients">

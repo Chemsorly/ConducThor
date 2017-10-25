@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using ConducThor_Server.Annotations;
 using ConducThor_Server.Model;
 using ConducThor_Server.Server;
+using ConducThor_Server.Utility;
 
 namespace ConducThor_Server
 {
@@ -19,13 +20,20 @@ namespace ConducThor_Server
         public ObservableCollection<ClientViewmodel> ClientList { get; set; }
 
         private Dispatcher dispatcher;
+        private UpdateNotifier _updateNotifier;
 
+        public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!": String.Empty);
         public void Initialize()
         {
+            //int
             dispatcher = Dispatcher.CurrentDispatcher;
             ClientList = new ObservableCollection<ClientViewmodel>();
 
-            _signalrmanager = new SignalRManager();
+            //init updater
+            _updateNotifier = new UpdateNotifier();
+            _updateNotifier.PropertyChanged += (sender, args) => OnPropertyChanged(nameof(VersionStatus));
+
+           _signalrmanager = new SignalRManager();
             _signalrmanager.NewClientEvent += pClient =>
             {
                 dispatcher.Invoke(() =>
