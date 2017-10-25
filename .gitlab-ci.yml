@@ -33,8 +33,7 @@ server-build:
         -f ConducThor_Server/build.Dockerfile 
         -t chemsorly/conducthor . '
     - docker rmi chemsorly/conducthor -f
-    - powershell docker rmi $(docker images -q -f dangling=true) -f
-    
+
 client-build-windows:
     stage: build
     only:
@@ -44,7 +43,6 @@ client-build-windows:
     - dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\ConducThor_Client\windows-cpu.dockerfile . 
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
-    - powershell docker rmi $(docker images -q -f dangling=true) -f
 
 server-deploy:
     stage: deploy
@@ -60,8 +58,7 @@ server-deploy:
     - docker create --name %ASSETCONTAINER_NAME% chemsorly/conducthor
     - docker cp %ASSETCONTAINER_NAME%:C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\ C:\\Gitlab-Releases\\ConducThor_Server\\
     - docker rmi chemsorly/conducthor -f
-    - powershell docker rmi $(docker images -q -f dangling=true) -f
-    
+
 client-deploy-windows:
     stage: deploy
     only:
@@ -72,4 +69,6 @@ client-deploy-windows:
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
+
+after-script:
     - powershell docker rmi $(docker images -q -f dangling=true) -f
