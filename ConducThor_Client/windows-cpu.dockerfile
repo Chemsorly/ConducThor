@@ -17,7 +17,7 @@ RUN Invoke-WebRequest $Env:DOTNET_DOWNLOAD_URL -OutFile dotnet.zip; \
 RUN setx /M PATH $($Env:PATH + ';' + $Env:ProgramFiles + '\dotnet')
 
 # run app
-COPY '.\bin\Debug\netcoreapp1.1\publish\' 'C:\\app\\' 
+COPY '.\ConducThor_Client\bin\Debug\netcoreapp1.1\publish\' 'C:\\app\\' 
 WORKDIR 'C:\\app\\'
 
 ENTRYPOINT dotnet .\ConducThor_Client.dll $Env:CONDUCTHOR_HOST
