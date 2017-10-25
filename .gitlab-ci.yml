@@ -32,7 +32,7 @@ server-build:
         --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
         -f ConducThor_Server/build.Dockerfile 
         -t chemsorly/conducthor . '
-    - docker rmi git.chemsorly.com/chemsorly/conducthor -f
+    - docker rmi chemsorly/conducthor -f
     - powershell docker rmi $(docker images -q -f dangling=true) -f
     
 client-build-windows:
