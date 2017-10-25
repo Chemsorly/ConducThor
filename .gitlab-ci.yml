@@ -40,6 +40,7 @@ client-build-windows:
     only:
     - branches
     script:
+    - nuget restore
     - cd ConducThor_Client
     - dotnet publish
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
