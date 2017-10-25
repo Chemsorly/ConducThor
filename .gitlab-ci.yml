@@ -40,10 +40,8 @@ client-build-windows:
     only:
     - branches
     script:
-    - nuget restore
-    - cd ConducThor_Client
-    - dotnet publish
-    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\windows-cpu.dockerfile . 
+    - dotnet publish ~/ConducThor_Client/ConducThor_Client.csproj
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\ConducThor_Client\windows-cpu.dockerfile . 
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
     - powershell docker rmi $(docker images -q -f dangling=true) -f
 
