@@ -17,4 +17,4 @@ RUN apt-get update && apt-get -y install dotnet-dev-1.1.4
 COPY 'ConducThor_Client/bin/Debug/netcoreapp1.1/publish/' 'root/app'  
 WORKDIR 'root/app'
 
-ENTRYPOINT dotnet ConducThor_Client.dll ${CONDUCTHOR_HOST}
+ENTRYPOINT dotnet ConducThor_Client.dll $CONDUCTHOR_HOST
