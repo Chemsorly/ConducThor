@@ -23,8 +23,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://releases.chemsorly.com/ConducThor_Server/master/</InstallUrl>
-    <UpdateUrl>http://releases.chemsorly.com/ConducThor_Server/master/</UpdateUrl>
+    <InstallUrl>https://releases.chemsorly.com/conducthor_server/master/</InstallUrl>
+    <UpdateUrl>https://releases.chemsorly.com/conducthor_server/master/</UpdateUrl>
     <ProductName>ConducThor_Server</ProductName>
     <PublisherName>Adrian Neubauer</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
