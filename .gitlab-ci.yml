@@ -63,8 +63,8 @@ client-build-ubuntu:
     script:
     - dotnet restore
     - dotnet publish ConducThor_Client/ConducThor_Client.csproj
-    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f /ConducThor_Client/ubuntu-cpu.dockerfile . 
-    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f /ConducThor_Client/ubuntu-gpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/ubuntu-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/ubuntu-gpu.dockerfile . 
     - docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
 
 server-deploy:
@@ -112,8 +112,8 @@ client-deploy-ubuntu:
     script: 
     - dotnet restore
     - dotnet publish ConducThor_Client/ConducThor_Client.csproj
-    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f\ConducThor_Client/ubuntus-cpu.dockerfile . 
-    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f\ConducThor_Client/ubuntus-gpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/ubuntu-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/ubuntu-gpu.dockerfile . 
     - docker push chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
     - docker push chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
