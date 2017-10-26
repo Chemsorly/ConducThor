@@ -1,10 +1,10 @@
 FROM chemsorly/keras-cntk:latest-ubuntu-py2-cpu
 SHELL ["/bin/bash", "-c"]
 
-ENV CONDUCTHOR_VERSION="dev"
-ENV CONDUCTHOR_OS="ubuntu"
-ENV CONDUCTHOR_TYPE="cpu"
-ARG CONDUCTHOR_HOST=""
+ENV CONDUCTHOR_VERSION dev
+ENV CONDUCTHOR_OS ubuntu
+ENV CONDUCTHOR_TYPE cpu
+ENV CONDUCTHOR_HOST ""
 
 # Install .NET Core
 RUN apt-get update && apt-get -y install apt-transport-https curl
