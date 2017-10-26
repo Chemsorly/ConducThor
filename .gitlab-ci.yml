@@ -78,7 +78,7 @@ server-deploy:
     script:
     - 'docker build 
         --build-arg MSBUILD_PROJECT=ConducThor.sln
-        --build-arg MSBUILD_ARGS=/p:ApplicationVersion=%PROJECT_VERSION%.%CI_BUILD_ID%;Configuration=Release;PublishDir=C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\;InstallUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/;UpdateUrl=https://releases.chemsorly.com/ConducThor_Server/%CI_BUILD_REF_NAME%/
+        --build-arg MSBUILD_ARGS=/p:ApplicationVersion=%PROJECT_VERSION%.%CI_BUILD_ID%;Configuration=Release;PublishDir=C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\;InstallUrl=https://releases.chemsorly.com/conducthor_server/%CI_BUILD_REF_NAME%/;UpdateUrl=https://releases.chemsorly.com/conducthor_server/%CI_BUILD_REF_NAME%/
         --build-arg MSBUILD_TARGET=/t:ConducThor_Server:Publish
         -f ConducThor_Server/build.Dockerfile 
         -t chemsorly/conducthor . '
