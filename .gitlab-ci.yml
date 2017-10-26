@@ -25,6 +25,10 @@ server-build:
     stage: build
     only: 
     - branches
+    tags:
+    - docker
+    - shell
+    - windows
     script:
     - 'docker build 
         --build-arg MSBUILD_PROJECT=ConducThor.sln
@@ -38,16 +42,39 @@ client-build-windows:
     stage: build
     only:
     - branches
+    tags:
+    - docker
+    - shell
+    - windows
     script:
     - dotnet restore
     - dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\ConducThor_Client\windows-cpu.dockerfile . 
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
 
+client-build-ubuntu:
+    stage: build
+    only:
+    - branches
+    tags:
+    - docker
+    - shell
+    - ubuntu
+    script:
+    - dotnet restore
+    - dotnet publish ConducThor_Client/ConducThor_Client.csproj
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f /ConducThor_Client/ubuntu-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f /ConducThor_Client/ubuntu-gpu.dockerfile . 
+    - docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
+
 server-deploy:
     stage: deploy
     only:
     - master
+    tags:
+    - docker
+    - shell
+    - windows
     script:
     - 'docker build 
         --build-arg MSBUILD_PROJECT=ConducThor.sln
@@ -63,12 +90,34 @@ client-deploy-windows:
     stage: deploy
     only:
     - master
+    tags:
+    - docker
+    - shell
+    - windows
     script: 
     - dotnet restore
     - dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\ConducThor_Client\windows-cpu.dockerfile . 
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
+    
+client-deploy-ubuntu:
+    stage: deploy
+    only:
+    - master
+    tags:
+    - docker
+    - shell
+    - ubuntu
+    script: 
+    - dotnet restore
+    - dotnet publish ConducThor_Client/ConducThor_Client.csproj
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f\ConducThor_Client/ubuntus-cpu.dockerfile . 
+    - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f\ConducThor_Client/ubuntus-gpu.dockerfile . 
+    - docker push chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
+    - docker push chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
+    - docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
+    - docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
 
 after_script:
     - powershell docker rmi $(docker images -q -f dangling=true) -f
