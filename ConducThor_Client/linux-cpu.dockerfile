@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 ENV CONDUCTHOR_VERSION="dev"
 ENV CONDUCTHOR_OS="ubuntu"
 ENV CONDUCTHOR_TYPE="cpu"
-ARG CONDUCTHOR_HOST=""
+ENV CONDUCTHOR_HOST=""
 
 # Install .NET Core
 RUN apt-get update && apt-get -y install apt-transport-https curl
@@ -17,4 +17,4 @@ RUN apt-get update && apt-get -y install dotnet-dev-1.1.4
 COPY 'ConducThor_Client/bin/Debug/netcoreapp1.1/publish/' 'root/app'  
 WORKDIR 'root/app'
 
-ENTRYPOINT dotnet ConducThor_Client.dll ${CONDUCTHOR_HOST}
+ENTRYPOINT dotnet ConducThor_Client.dll $CONDUCTHOR_HOST
