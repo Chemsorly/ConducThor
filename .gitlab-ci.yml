@@ -98,6 +98,7 @@ client-deploy-windows:
     - dotnet restore
     - dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
     - docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-windows-cpu -f .\ConducThor_Client\windows-cpu.dockerfile . 
+    - docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD%
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
     
@@ -114,6 +115,7 @@ client-deploy-ubuntu:
     - dotnet publish ConducThor_Client/ConducThor_Client.csproj
     - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/linux-cpu.dockerfile . 
     - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/linux-gpu.dockerfile . 
+    - sudo docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD%
     - sudo docker push chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
     - sudo docker push chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
     - sudo docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
