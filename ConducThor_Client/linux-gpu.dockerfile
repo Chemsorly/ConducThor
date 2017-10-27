@@ -3,7 +3,7 @@ SHELL ["/bin/bash", "-c"]
 
 ENV CONDUCTHOR_VERSION="dev"
 ENV CONDUCTHOR_OS="ubuntu"
-ENV CONDUCTHOR_TYPE="cpu"
+ENV CONDUCTHOR_TYPE="gpu"
 ENV CONDUCTHOR_HOST=""
 
 # Install .NET Core
