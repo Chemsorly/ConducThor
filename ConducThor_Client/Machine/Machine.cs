@@ -18,7 +18,6 @@ namespace ConducThor_Client.Machine
             };
         }
 
-
         static OSEnum GetOperatingSystem()
         {
             var osvar = Environment.GetEnvironmentVariable("CONDUCTHOR_OS");
@@ -43,7 +42,7 @@ namespace ConducThor_Client.Machine
 
         static String GetContainerVersion()
         {
-            return Environment.GetEnvironmentVariable("CONDUCTHOR_VERSION") ?? "";
+            return Environment.GetEnvironmentVariable("CONDUCTHOR_VERSION") ?? "dev";
         }
     }
 }

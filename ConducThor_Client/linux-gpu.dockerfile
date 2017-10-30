@@ -1,10 +1,11 @@
 FROM chemsorly/keras-cntk:latest-ubuntu-py2-gpu
 SHELL ["/bin/bash", "-c"]
 
-ENV CONDUCTHOR_VERSION="dev"
-ENV CONDUCTHOR_OS="ubuntu"
-ENV CONDUCTHOR_TYPE="gpu"
-ENV CONDUCTHOR_HOST=""
+ARG CONDUCTHOR_VERSION
+ENV CONDUCTHOR_VERSION ${CONDUCTHOR_VERSION}
+ENV CONDUCTHOR_OS ubuntu
+ENV CONDUCTHOR_TYPE gpu
+ENV CONDUCTHOR_HOST
 
 # Install .NET Core
 RUN apt-get update && apt-get -y install apt-transport-https curl
