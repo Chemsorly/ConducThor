@@ -22,7 +22,7 @@ namespace ConducThor_Server.Server
         public static event NewClient NewClientEvent;
         public static event ClientDisconnected ClientDisconnectedEvent;
         public static event MachineDataReceived MachineDataReceivedEvent;
-
+        public static event SignalRManager.NewLogMessage NewLogMessageEvent;
 
         /// <summary>
         /// Context instance to access client connections to broadcast to
@@ -60,5 +60,41 @@ namespace ConducThor_Server.Server
         {
             MachineDataReceivedEvent?.Invoke(this.Context.ConnectionId,pMachineData);
         }
+
+        public WorkPackage FetchWork()
+        {
+            //debug test
+            NewLogMessageEvent?.Invoke($"New Work Request received from {this.Context.ConnectionId}");
+            return new WorkPackage()
+            {
+                //example ubuntu commands
+                Commands = new List<WorkPackage.Command>()
+                {
+                    new WorkPackage.Command()
+                    {
+                        FileName = "/bin/bash",
+                        Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                        WorkDir = "/root/app"
+                    },
+                    new WorkPackage.Command()
+                    {
+                        FileName = "/bin/bash",
+                        Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
+                        WorkDir = "/root/app/MA-C2K-LSTM/code"
+                    }
+                }
+            };
+        }
+
+        public void UpdateStatus(ClientStatus pStatus)
+        {
+            
+        }
+
+        public void SendConsoleMessage(String pMessage)
+        {
+            NewLogMessageEvent?.Invoke(pMessage);
+        }
+
     }
 }

@@ -34,6 +34,7 @@ namespace ConducThor_Server.Server
         {
             CommHub.NewClientEvent += NotifyNewClientEvent;
             CommHub.ClientDisconnectedEvent += NotifyClientDisconnectedEvent;
+            CommHub.NewLogMessageEvent += NotifyNewLogMessageEvent;
             CommHub.MachineDataReceivedEvent += (id, data) =>
             {
                 var client = Clients.FirstOrDefault(t => t.ID == id);
