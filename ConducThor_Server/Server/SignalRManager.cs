@@ -21,11 +21,14 @@ namespace ConducThor_Server.Server
         public delegate void ClientUpdated(Client pClient);
         public delegate void ClientDisconnected(Client pClientID);
 
+        public delegate void NewLogMessage(String pMessage);
+
         List<Client> Clients = new List<Client>();
 
         public event ClientUpdated ClientUpdatedEvent;
         public event NewClient NewClientEvent;
         public event ClientDisconnected ClientDisconnectedEvent;
+        public event NewLogMessage NewLogMessageEvent;
 
         public void Initialize()
         {
@@ -46,11 +49,14 @@ namespace ConducThor_Server.Server
             try
             {
                 _signalrapp = WebApp.Start<SignalRStartup>("http://*:8080/");
+                NotifyNewLogMessageEvent("SignalR listener initialized to port 8080");
             }
             catch (Exception ex)
             {
-                
+                NotifyNewLogMessageEvent($"Could not start SignalR listener on port 8080. Are you running the application as admin? Exception: {ex.Message}");
             }
+
+            NotifyNewLogMessageEvent("SignalR manager initialized");
         }
 
         private void NotifyNewClientEvent(String pClientID)
@@ -65,6 +71,7 @@ namespace ConducThor_Server.Server
                     });
 
                 NewClientEvent?.Invoke(Clients.First(t => t.ID == pClientID));
+                NotifyNewLogMessageEvent($"Client connected: {pClientID}");
             }
         }
 
@@ -77,13 +84,18 @@ namespace ConducThor_Server.Server
                 {
                     Clients.Remove(client);
                     ClientDisconnectedEvent?.Invoke(client);
+                    NotifyNewLogMessageEvent($"Client disconnected: {pClientID}");
                 }
             }
         }
-
         private void NotifyClientUpdatedEvent(Client pClient)
         {
             ClientUpdatedEvent?.Invoke(pClient);
+        }
+
+        private void NotifyNewLogMessageEvent(String pMessage)
+        {
+            NewLogMessageEvent?.Invoke(pMessage);
         }
     }
 }

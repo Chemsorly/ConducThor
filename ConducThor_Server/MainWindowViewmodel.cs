@@ -22,6 +22,10 @@ namespace ConducThor_Server
         private Dispatcher dispatcher;
         private UpdateNotifier _updateNotifier;
 
+        private List<String> LogMessages = new List<string>();
+        public String Log => String.Join("\n", LogMessages);
+
+
         public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!": String.Empty);
         public void Initialize()
         {
@@ -59,13 +63,21 @@ namespace ConducThor_Server
                     }
                 });
             };
-
+            _signalrmanager.NewLogMessageEvent += delegate(string message)
+            {
+                dispatcher.Invoke(() =>
+                {
+                    if (message != null)
+                    {
+                        LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                        OnPropertyChanged(nameof(Log));
+                    }
+                });
+            };
 
             _signalrmanager.Initialize();
-
             OnPropertyChanged(String.Empty);
         }
-
 
         #region INotifyPropertyChanged
 

@@ -36,6 +36,11 @@
             <mahapps:MetroTabItem Header="Settings">
 
             </mahapps:MetroTabItem>
+            <mahapps:MetroTabItem Header="Log">
+            <Grid>
+                <TextBox Text="{Binding Log, Mode=OneWay}" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
+            </Grid>
+            </mahapps:MetroTabItem>
         </mahapps:MetroTabControl>
     </Grid>
 </mahapps:MetroWindow>
