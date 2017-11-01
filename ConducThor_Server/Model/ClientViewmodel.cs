@@ -1,22 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ConducThor_Server.Annotations;
+using ConducThor_Server.Utility;
 using ConducThor_Shared.Enums;
 
 namespace ConducThor_Server.Model
 {
     public class ClientViewmodel : INotifyPropertyChanged
     {
+        private Client _client;
         private String _id = String.Empty;
         private String _machineName = String.Empty;
         private String _containerVersion = String.Empty;
         private OSEnum? _operatingSystem = null;
         private ProcessingUnitEnum? _processingUnit = null;
+
+        public ClientViewmodel(Client pClient)
+        {
+            _client = pClient;
+        }
 
         public String ID
         {
@@ -43,6 +51,8 @@ namespace ConducThor_Server.Model
             get => _processingUnit ?? ProcessingUnitEnum.undefined;
             set { _processingUnit = value; OnPropertyChanged(); }
         }
+
+        public AsyncObservableCollection<String> LogMessages => _client.LogMessages;
 
         public void UpdateValues(Client pClient)
         {

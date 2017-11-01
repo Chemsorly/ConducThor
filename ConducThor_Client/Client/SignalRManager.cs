@@ -41,11 +41,13 @@ namespace ConducThor_Client.Client
             {
                 _commandManager = new WindowsCommandManager();
                 _filesystemManager = new WindowsFilesystemManager();
+                NotifyLogMessageEvent("WindowsOS managers initialized");
             }
             else if (_machineData.OperatingSystem == OSEnum.Ubuntu)
             {
                 _commandManager = new LinuxCommandManager();
                 _filesystemManager = new LinuxFilesystemManager();
+                NotifyLogMessageEvent("LinuxOS managers initialized");
             }
             else
             {
@@ -53,27 +55,29 @@ namespace ConducThor_Client.Client
             }
 
             //subscribe to events
-            _commandManager.NewConsoleMessageEvent += delegate(string message) { LogEvent?.Invoke(message); };
+            _commandManager.NewConsoleMessageEvent += delegate(string message)
+            {
+                NotifyLogMessageEvent(message);
+                SendConsoleMessage(message);
+            };
         }
 
         public void Initialize(String pEndpoint)
         {
             _connection = new HubConnection(pEndpoint);
             _connection.Received += Connection_Received;
-            _connection.StateChanged += delegate(StateChange obj){OnPropertyChanged(nameof(ConnectionState)); LogEvent?.Invoke($"state changed from {obj.OldState} to {obj.NewState}"); };
-            _connection.Received += delegate(String s) { LogEvent?.Invoke(s); };
-            _connection.Error += delegate(Exception ex) { LogEvent?.Invoke(ex.Message); };
-            _connection.Reconnecting += delegate() { LogEvent?.Invoke("reconnecting"); };
-            _connection.Reconnected += delegate { _hub.Invoke("Connect", _machineData); LogEvent?.Invoke("reconnected"); };
+            _connection.StateChanged += delegate(StateChange obj){OnPropertyChanged(nameof(ConnectionState)); NotifyLogMessageEvent($"state changed from {obj.OldState} to {obj.NewState}"); };
+            _connection.Received += delegate(String s) { NotifyLogMessageEvent(s); };
+            _connection.Error += delegate(Exception ex) { NotifyLogMessageEvent(ex.Message); };
+            _connection.Reconnecting += delegate() { NotifyLogMessageEvent("reconnecting"); };
+            _connection.Reconnected += delegate { _hub.Invoke("Connect", _machineData); NotifyLogMessageEvent("reconnected"); };
             _connection.Closed += delegate () {
-                LogEvent?.Invoke("closed... restarting...");
+                NotifyLogMessageEvent("closed... restarting...");
                 Initialize(pEndpoint);
             };
             Connect();
 
-            if(_pollTimer != null)
-                _pollTimer.Dispose();
-
+            _pollTimer?.Dispose();
             _pollTimer = new Timer(delegate(object state)
             {
                 if (IsWorking)
@@ -86,22 +90,19 @@ namespace ConducThor_Client.Client
                     if (work == null)
                         return;
 
-                    LogEvent?.Invoke("Create process.");
-                    var task = Task.Factory.StartNew(() =>
-                    {
-                        foreach (var command in work.Commands)
-                            _commandManager.CreateProcess(command).Wait();
-                    });
-                    task.ContinueWith(t =>
-                    {
-                        IsWorking = false;
-                        LogEvent?.Invoke("Process finished.");
-                    });
+                    NotifyLogMessageEvent("Create process.");
+                    foreach (var command in work.Commands)
+                        _commandManager.CreateProcess(command).Wait();
+                    NotifyLogMessageEvent("Process finished.");
                 }
                 catch (Exception e)
                 {
                     IsWorking = false;
-                    LogEvent?.Invoke(e.Message);
+                    NotifyLogMessageEvent(e.Message);
+                }
+                finally
+                {
+                    IsWorking = false;
                 }
 
             }, null, 6000, 60000);
@@ -109,11 +110,10 @@ namespace ConducThor_Client.Client
 
         private void Connect(){
             _hub = _connection.CreateHubProxy("CommHub");
-
             _connection.Start().Wait();
-            LogEvent?.Invoke("Hub started");
+            NotifyLogMessageEvent("Hub started");
             _hub.Invoke("Connect", _machineData);
-            LogEvent?.Invoke("Connected to hub");
+            NotifyLogMessageEvent("Connected to hub");
         }
 
         private WorkPackage FetchWork()
@@ -125,24 +125,47 @@ namespace ConducThor_Client.Client
 
                 if (result != null)
                 {
-                    LogEvent?.Invoke($"Work package received: {String.Join("; ", result.Commands)}");
+                    NotifyLogMessageEvent($"Work package received from server: {String.Join("; ", result.Commands.Select(t => $"{t.FileName} {t.Arguments} {t.WorkDir}"))}");
                 }
                 else
-                    LogEvent?.Invoke($"Requested work package. None available.");
+                    NotifyLogMessageEvent($"Requested work package. None available.");
                 return result;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Fetch work failed: {e.Message}");
+                NotifyLogMessageEvent($"Fetch work failed: {e.Message}");
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// sends a console message to the server
+        /// </summary>
+        /// <param name="pConsoleMessage"></param>
+        private void SendConsoleMessage(String pConsoleMessage)
+        {
+            try
+            {
+                _hub.Invoke("SendConsoleMessage", pConsoleMessage);
+            }
+            catch (Exception ex)
+            {
+                //NotifyLogMessageEvent($"ERROR (SendConsoleMessage): {ex.Message}");
             }
         }
 
         private void Connection_Received(string obj)
         {
-            LogEvent?.Invoke($"Received message from hub: {obj}");
+            NotifyLogMessageEvent($"Received message from hub: {obj}");
         }
-        
+
+
+        private void NotifyLogMessageEvent(String pLogMessage)
+        {
+            LogEvent?.Invoke(pLogMessage);
+            SendConsoleMessage($"[LOG]: {pLogMessage}");
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

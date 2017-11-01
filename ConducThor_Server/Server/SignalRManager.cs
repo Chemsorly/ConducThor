@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using ConducThor_Server.Model;
+using ConducThor_Server.Utility;
 using ConducThor_Shared;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
@@ -17,11 +19,11 @@ namespace ConducThor_Server.Server
     {
         private IDisposable _signalrapp;
 
-        public delegate void NewClient(Client pClientID);
+        public delegate void NewClient(Client pClient);
         public delegate void ClientUpdated(Client pClient);
-        public delegate void ClientDisconnected(Client pClientID);
-
+        public delegate void ClientDisconnected(Client pClient);
         public delegate void NewLogMessage(String pMessage);
+        public delegate void NewClientLogMessage(Client pClient, String pMessage);
 
         List<Client> Clients = new List<Client>();
 
@@ -29,12 +31,14 @@ namespace ConducThor_Server.Server
         public event NewClient NewClientEvent;
         public event ClientDisconnected ClientDisconnectedEvent;
         public event NewLogMessage NewLogMessageEvent;
+        public event NewClientLogMessage NewConsoleLogMessage;
 
         public void Initialize()
         {
             CommHub.NewClientEvent += NotifyNewClientEvent;
             CommHub.ClientDisconnectedEvent += NotifyClientDisconnectedEvent;
             CommHub.NewLogMessageEvent += NotifyNewLogMessageEvent;
+            CommHub.NewClientLogMessageEvent += NewClientLogMessageEvent;
             CommHub.MachineDataReceivedEvent += (id, data) =>
             {
                 var client = Clients.FirstOrDefault(t => t.ID == id);
@@ -66,11 +70,16 @@ namespace ConducThor_Server.Server
             {
                 //add client if not exist
                 if (Clients.All(t => t.ID != pClientID))
-                    Clients.Add(new Client()
+                {
+                    App.Current.Dispatcher.Invoke(() =>
                     {
-                        ID = pClientID
+                        Clients.Add(new Client()
+                        {
+                            ID = pClientID,
+                            LogMessages = new AsyncObservableCollection<string>()
+                        });
                     });
-
+                }
                 NewClientEvent?.Invoke(Clients.First(t => t.ID == pClientID));
                 NotifyNewLogMessageEvent($"Client connected: {pClientID}");
             }
@@ -93,6 +102,19 @@ namespace ConducThor_Server.Server
         {
             ClientUpdatedEvent?.Invoke(pClient);
             NotifyNewLogMessageEvent($"CONNECT: {pClient.ID}");
+        }
+
+        private void NewClientLogMessageEvent(string pClientID, string pLogMessage)
+        {
+            var targetClient = Clients.FirstOrDefault(t => t.ID == pClientID);
+            if (targetClient != null)
+            {
+                lock (targetClient.LogMessages)
+                {
+                    targetClient.LogMessages.Add($"[{DateTime.UtcNow:G}] {pLogMessage}");
+                    NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);
+                }
+            }
         }
 
         private void NotifyNewLogMessageEvent(String pMessage)

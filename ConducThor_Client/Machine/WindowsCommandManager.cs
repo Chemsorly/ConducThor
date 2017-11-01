@@ -10,31 +10,33 @@ namespace ConducThor_Client.Machine
 {
     class WindowsCommandManager : ICommandManager
     {
-        public override Task CreateProcess(WorkPackage.Command pCommand)
+        public override Task CreateProcess(WorkPackage.Command pCommands)
         {
             return Task.Factory.StartNew(() =>
             {
                 //https://loune.net/2017/06/running-shell-bash-commands-in-net-core/
-                NotifyNewConsoleMessageEvent($"Create process with command: {pCommand}");
+                NotifyNewConsoleMessageEvent($"[DEBUG] Create process for: {pCommands.FileName} {pCommands.Arguments} {pCommands.WorkDir}");
                 using (var process = new Process()
                 {
                     StartInfo = new ProcessStartInfo()
                     {
-                        FileName = "cmd",
-                        WorkingDirectory = @"C:\app",
-                        Arguments = $"/C {pCommand}",
+                        FileName = pCommands.FileName,
+                        WorkingDirectory = pCommands.WorkDir,
+                        Arguments = pCommands.Arguments,
                         RedirectStandardOutput = true,
-                        //RedirectStandardInput = true
+                        //RedirectStandardInput = true,
+                        RedirectStandardError = true
+                        //UseShellExecute = false
                     }
                 })
                 {
                     process.OutputDataReceived += Process_OutputDataReceived;
-                    //process.ErrorDataReceived += Process_ErrorDataReceived;
+                    process.ErrorDataReceived += Process_ErrorDataReceived;
+                    NotifyNewConsoleMessageEvent($"[DEBUG] Starting process for: {pCommands.FileName} {pCommands.Arguments} {pCommands.WorkDir}");
                     process.Start();
                     process.WaitForExit();
+                    NotifyNewConsoleMessageEvent($"[DEBUG] Finished process for: {pCommands.FileName} {pCommands.Arguments} {pCommands.WorkDir}");
                 }
-                
-                NotifyNewConsoleMessageEvent($"Finished process with command: {pCommand}");
             });
         }
     }

@@ -23,13 +23,13 @@ namespace ConducThor_Client.Machine
                         Arguments = pCommands.Arguments,
                         RedirectStandardOutput = true,
                         //RedirectStandardInput = true,
-                        //RedirectStandardError = true,
+                        RedirectStandardError = true,
                         UseShellExecute = false
                     }
                 })
                 {
                     process.OutputDataReceived += Process_OutputDataReceived;
-                    //process.ErrorDataReceived += Process_ErrorDataReceived;
+                    process.ErrorDataReceived += Process_ErrorDataReceived;
                     process.Start();
                     process.WaitForExit();
                 }

@@ -18,10 +18,12 @@ namespace ConducThor_Server.Server
         public delegate void NewClient(String pClientID);
         public delegate void ClientDisconnected(String pClientID);
         public delegate void MachineDataReceived(String pClientID, MachineData pMachineData);
+        public delegate void NewClientLogMessage(String pClientID, String pLogMessage);
 
         public static event NewClient NewClientEvent;
         public static event ClientDisconnected ClientDisconnectedEvent;
         public static event MachineDataReceived MachineDataReceivedEvent;
+        public static event NewClientLogMessage NewClientLogMessageEvent;
         public static event SignalRManager.NewLogMessage NewLogMessageEvent;
 
         /// <summary>
@@ -68,20 +70,37 @@ namespace ConducThor_Server.Server
             return new WorkPackage()
             {
                 //example ubuntu commands
+                //Commands = new List<WorkPackage.Command>()
+                //{
+                //    new WorkPackage.Command()
+                //    {
+                //        FileName = "/bin/bash",
+                //        Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                //        WorkDir = "/root/app"
+                //    },
+                //    new WorkPackage.Command()
+                //    {
+                //        FileName = "/bin/bash",
+                //        Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
+                //        WorkDir = "/root/app/MA-C2K-LSTM/code"
+                //    }
+                //}
+
+
                 Commands = new List<WorkPackage.Command>()
                 {
                     new WorkPackage.Command()
                     {
-                        FileName = "/bin/bash",
-                        Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                        WorkDir = "/root/app"
-                    },
-                    new WorkPackage.Command()
-                    {
-                        FileName = "/bin/bash",
-                        Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
-                        WorkDir = "/root/app/MA-C2K-LSTM/code"
+                        FileName = "cmd.exe",
+                        Arguments = "/c git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git",
+                        WorkDir = "C:\\app\\"
                     }
+                    //new WorkPackage.Command()
+                    //{
+                    //    FileName = "cmd.exe",
+                    //    Arguments = "/c \"dotnet --version\"",
+                    //    WorkDir = "C:\\app\\"
+                    //}
                 }
             };
         }
@@ -93,7 +112,7 @@ namespace ConducThor_Server.Server
 
         public void SendConsoleMessage(String pMessage)
         {
-            NewLogMessageEvent?.Invoke(pMessage);
+            NewClientLogMessageEvent?.Invoke(this.Context.ConnectionId,pMessage);
         }
 
     }

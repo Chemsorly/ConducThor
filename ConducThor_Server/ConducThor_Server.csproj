@@ -152,6 +152,7 @@
     <Compile Include="Server\CommHub.cs" />
     <Compile Include="Server\SignalRManager.cs" />
     <Compile Include="Server\SignalRStartup.cs" />
+    <Compile Include="Utility\AsyncObservableCollection.cs" />
     <Compile Include="Utility\UpdateNotifier.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -22,12 +22,12 @@ namespace ConducThor_Client.Machine
 
         internal void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            NotifyNewConsoleMessageEvent(e.ToString());
+            NotifyNewConsoleMessageEvent(e.Data);
         }
 
         internal void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            NotifyNewConsoleMessageEvent(e.ToString());
+            NotifyNewConsoleMessageEvent(e.Data);
         }
     }
 }

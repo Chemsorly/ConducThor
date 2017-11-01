@@ -25,6 +25,12 @@ namespace ConducThor_Server
         private List<String> LogMessages = new List<string>();
         public String Log => String.Join("\n", LogMessages);
 
+        private ClientViewmodel _selectedClient;
+        public ClientViewmodel SelectedClient
+        {
+            get { return _selectedClient; }
+            set { _selectedClient = value; OnPropertyChanged(); }
+        }
 
         public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!": String.Empty);
         public void Initialize()
@@ -42,7 +48,7 @@ namespace ConducThor_Server
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Add(new ClientViewmodel() {ID = pClient.ID });
+                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID,  });
                 });
             };
             _signalrmanager.ClientDisconnectedEvent += pClient =>
@@ -74,6 +80,16 @@ namespace ConducThor_Server
                     }
                 });
             };
+            _signalrmanager.NewConsoleLogMessage += delegate(Client client, string message)
+                {
+                    dispatcher.Invoke(() =>
+                    {
+                        if (client != null && !String.IsNullOrWhiteSpace(message))
+                        {
+                            //OnPropertyChanged($"{nameof(SelectedClient)}.{nameof(SelectedClient.LogMessages)}");
+                        }
+                    });
+                };
 
             _signalrmanager.Initialize();
             OnPropertyChanged(String.Empty);
