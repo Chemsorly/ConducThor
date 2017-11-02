@@ -75,8 +75,7 @@ namespace ConducThor_Server.Server
                     {
                         Clients.Add(new Client()
                         {
-                            ID = pClientID,
-                            LogMessages = new AsyncObservableCollection<string>()
+                            ID = pClientID
                         });
                     });
                 }
@@ -109,11 +108,7 @@ namespace ConducThor_Server.Server
             var targetClient = Clients.FirstOrDefault(t => t.ID == pClientID);
             if (targetClient != null)
             {
-                lock (targetClient.LogMessages)
-                {
-                    targetClient.LogMessages.Add($"[{DateTime.UtcNow:G}] {pLogMessage}");
-                    NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);
-                }
+                NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);
             }
         }
 

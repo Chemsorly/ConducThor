@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -92,7 +93,32 @@ namespace ConducThor_Client.Client
 
                     NotifyLogMessageEvent("Create process.");
                     foreach (var command in work.Commands)
-                        _commandManager.CreateProcess(command).Wait();
+                    {
+                        NotifyLogMessageEvent($"[DEBUG] Create process for: {command.FileName} {command.Arguments} {command.WorkDir}");
+                        Task.Factory.StartNew(()=>
+                        {
+                            var StartInfo = new ProcessStartInfo()
+                            {
+                                FileName = command.FileName,
+                                WorkingDirectory = command.WorkDir,
+                                Arguments = command.Arguments,
+                                RedirectStandardOutput = true,
+                                RedirectStandardInput = true,
+                                RedirectStandardError = true,
+                                UseShellExecute = false
+                            };
+                            var process = new Process { StartInfo = StartInfo };
+                            process.OutputDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
+                            process.ErrorDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
+                            NotifyLogMessageEvent($"[DEBUG] Starting process for: {command.FileName} {command.Arguments} {command.WorkDir}");
+                            process.Start();
+                            process.BeginOutputReadLine();
+                            process.BeginErrorReadLine();
+                            process.WaitForExit();
+                            NotifyLogMessageEvent($"[DEBUG] Finished process for: {command.FileName} {command.Arguments} {command.WorkDir}");
+                            process.Dispose();
+                        }).Wait();
+                    }
                     NotifyLogMessageEvent("Process finished.");
                 }
                 catch (Exception e)

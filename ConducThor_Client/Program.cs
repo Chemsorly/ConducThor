@@ -12,7 +12,6 @@ namespace ConducThor_Client
 
         static void Main(string[] args)
         {
-            //how to run with args: dotnet -- --help where "help" is the arg
             if (!args.Any())
             {
                 Console.WriteLine("No args specified");

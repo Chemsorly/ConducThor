@@ -70,38 +70,38 @@ namespace ConducThor_Server.Server
             return new WorkPackage()
             {
                 //example ubuntu commands
-                //Commands = new List<WorkPackage.Command>()
-                //{
-                //    new WorkPackage.Command()
-                //    {
-                //        FileName = "/bin/bash",
-                //        Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                //        WorkDir = "/root/app"
-                //    },
-                //    new WorkPackage.Command()
-                //    {
-                //        FileName = "/bin/bash",
-                //        Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
-                //        WorkDir = "/root/app/MA-C2K-LSTM/code"
-                //    }
-                //}
-
-
                 Commands = new List<WorkPackage.Command>()
                 {
                     new WorkPackage.Command()
                     {
-                        FileName = "cmd.exe",
-                        Arguments = "/c git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git",
-                        WorkDir = "C:\\app\\"
+                        FileName = "/bin/bash",
+                        Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                        WorkDir = "/root/app"
+                    },
+                    new WorkPackage.Command()
+                    {
+                        FileName = "/bin/bash",
+                        Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
+                        WorkDir = "/root/app/MA-C2K-LSTM/code"
                     }
-                    //new WorkPackage.Command()
-                    //{
-                    //    FileName = "cmd.exe",
-                    //    Arguments = "/c \"dotnet --version\"",
-                    //    WorkDir = "C:\\app\\"
-                    //}
                 }
+
+
+                //Commands = new List<WorkPackage.Command>()
+                //{
+                //    new WorkPackage.Command()
+                //    {
+                //        FileName = "cmd",
+                //        Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                //        WorkDir = "C:\\app\\"
+                //    },
+                //    new WorkPackage.Command()
+                //    {
+                //        FileName = "python",
+                //        Arguments = "train_c2k.py",
+                //        WorkDir = "C:\\app\\MA-C2K-LSTM\\code"
+                //    }
+                //}
             };
         }
 

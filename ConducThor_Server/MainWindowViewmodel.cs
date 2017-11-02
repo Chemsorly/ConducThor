@@ -29,8 +29,10 @@ namespace ConducThor_Server
         public ClientViewmodel SelectedClient
         {
             get { return _selectedClient; }
-            set { _selectedClient = value; OnPropertyChanged(); }
+            set { _selectedClient = value; OnPropertyChanged(); OnPropertyChanged(nameof(SelectedClientLogMessages)); }
         }
+
+        public AsyncObservableCollection<String> SelectedClientLogMessages => SelectedClient?.LogMessages;
 
         public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!": String.Empty);
         public void Initialize()
@@ -48,7 +50,7 @@ namespace ConducThor_Server
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID,  });
+                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID });
                 });
             };
             _signalrmanager.ClientDisconnectedEvent += pClient =>
@@ -80,13 +82,14 @@ namespace ConducThor_Server
                     }
                 });
             };
-            _signalrmanager.NewConsoleLogMessage += delegate(Client client, string message)
+            _signalrmanager.NewConsoleLogMessage += delegate(Client pClient, string message)
                 {
                     dispatcher.Invoke(() =>
                     {
+                        var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
                         if (client != null && !String.IsNullOrWhiteSpace(message))
                         {
-                            //OnPropertyChanged($"{nameof(SelectedClient)}.{nameof(SelectedClient.LogMessages)}");
+                            client.LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
                         }
                     });
                 };

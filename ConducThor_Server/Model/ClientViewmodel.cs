@@ -52,7 +52,16 @@ namespace ConducThor_Server.Model
             set { _processingUnit = value; OnPropertyChanged(); }
         }
 
-        public AsyncObservableCollection<String> LogMessages => _client.LogMessages;
+        private AsyncObservableCollection<String> _logMessages;
+        public AsyncObservableCollection<String> LogMessages
+        {
+            get { if(_logMessages == null) _logMessages = new AsyncObservableCollection<string>(); return _logMessages;}
+            set
+            {
+                _logMessages = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void UpdateValues(Client pClient)
         {

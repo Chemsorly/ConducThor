@@ -27,7 +27,7 @@
                         <TextBlock Text="Registered Clients: 0 "/>
                     </StackPanel>
                     <DataGrid Grid.Row="1" ItemsSource="{Binding ClientList}" SelectedItem="{Binding SelectedClient}" IsReadOnly="True" />
-                    <ListBox Grid.Row="2" Background="{StaticResource AccentColorBrush4}" ItemsSource="{Binding SelectedClient.LogMessages, Mode=OneWay}" IsEnabled="False"/>
+                    <ListBox Grid.Row="2" Background="{StaticResource AccentColorBrush4}" ItemsSource="{Binding SelectedClientLogMessages, Mode=OneWay}" />
                 </Grid>
             </mahapps:MetroTabItem>
             <mahapps:MetroTabItem Header="Command Queue">

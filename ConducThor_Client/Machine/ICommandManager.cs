@@ -13,7 +13,7 @@ namespace ConducThor_Client.Machine
     {
         internal event SignalRManager.NewConsoleMessage NewConsoleMessageEvent;
 
-        public abstract Task CreateProcess(WorkPackage.Command pCommands);
+        public abstract void CreateProcess(WorkPackage.Command pCommands);
 
         public void NotifyNewConsoleMessageEvent(String pMessage)
         {

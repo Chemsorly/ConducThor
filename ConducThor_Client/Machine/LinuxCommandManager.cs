@@ -9,10 +9,10 @@ namespace ConducThor_Client.Machine
 {
     class LinuxCommandManager : ICommandManager
     {
-        public override Task CreateProcess(WorkPackage.Command pCommands)
+        public override void CreateProcess(WorkPackage.Command pCommands)
         {
-            return Task.Factory.StartNew(() =>
-            {
+            //return Task.Run(() =>
+            //{
                 //https://loune.net/2017/06/running-shell-bash-commands-in-net-core/
                 using (var process = new Process()
                 {
@@ -33,7 +33,7 @@ namespace ConducThor_Client.Machine
                     process.Start();
                     process.WaitForExit();
                 }
-            });
+            //});
         }
     }
 }
