@@ -1,3 +1,10 @@
+FROM microsoft/dotnet:2.0.0-sdk-2.0.2 as builder
+SHELL ["powershell"]
+
+COPY . 'C:\\build\\'
+WORKDIR 'C:\\build\\'
+RUN dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
+
 FROM chemsorly/keras-cntk:latest-windows-py2-cpu
 SHELL ["powershell"]
 
@@ -18,7 +25,7 @@ RUN Invoke-WebRequest $Env:DOTNET_DOWNLOAD_URL -OutFile dotnet.zip; \
 RUN setx /M PATH $($Env:PATH + ';' + $Env:ProgramFiles + '\dotnet')
 
 # run app
-COPY '.\ConducThor_Client\bin\Debug\netcoreapp2.0\publish\' 'C:\\app\\' 
+COPY --from=builder 'C:\build\ConducThor_Client\bin\Debug\netcoreapp2.0\publish\' 'C:\\app\\' 
 WORKDIR 'C:\\app\\'
 
 ENTRYPOINT dotnet .\ConducThor_Client.dll $Env:CONDUCTHOR_HOST
