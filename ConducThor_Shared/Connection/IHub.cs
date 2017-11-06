@@ -15,7 +15,7 @@ namespace ConducThor_Shared.Connection
         /// <summary>
         /// fetches a work unit from the server to process
         /// </summary>
-        WorkPackage FetchWork();
+        WorkPackage FetchWork(MachineData pMachineData);
 
         /// <summary>
         /// sends result to server after work unit is completed; TODO: define result unit
