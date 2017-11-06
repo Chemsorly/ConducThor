@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ConducThor_Server.Annotations;
+using ConducThor_Server.Commands;
 using ConducThor_Server.Model;
 using ConducThor_Server.Server;
 using ConducThor_Server.Utility;
@@ -16,12 +17,15 @@ namespace ConducThor_Server
     {
         private SignalRManager _signalrmanager;
         private UpdateNotifier _updateNotifier;
+        private CommandManager _commandManager;
+
+        public delegate void NewLogMessage(String pLogMessage);
 
         //forwarded events from SignalR manager
         public event SignalRManager.ClientUpdated ClientUpdatedEvent;
         public event SignalRManager.NewClient NewClientEvent;
         public event SignalRManager.ClientDisconnected ClientDisconnectedEvent;
-        public event SignalRManager.NewLogMessage NewLogMessageEvent;
+        public event NewLogMessage NewLogMessageEvent;
         public event SignalRManager.NewClientLogMessage NewConsoleLogMessage;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,6 +36,8 @@ namespace ConducThor_Server
             //init updater
             _updateNotifier = new UpdateNotifier();
             _updateNotifier.PropertyChanged += (sender, args) => OnPropertyChanged(nameof(VersionStatus));
+
+            //forward signalr manager
             _signalrmanager = new SignalRManager();
             _signalrmanager.NewClientEvent +=delegate(Client client) { NewClientEvent?.Invoke(client);  };
             _signalrmanager.ClientDisconnectedEvent += delegate(Client client) { ClientDisconnectedEvent?.Invoke(client); };
@@ -39,6 +45,10 @@ namespace ConducThor_Server
             _signalrmanager.NewLogMessageEvent += delegate(string message) { NewLogMessageEvent?.Invoke(message); };
             _signalrmanager.NewConsoleLogMessage += delegate (Client pClient, string message) { NewConsoleLogMessage?.Invoke(pClient,message); };
             _signalrmanager.Initialize();
+
+            //create command manager
+            _commandManager = new CommandManager();
+            _commandManager.Initialize();
 
         }
 

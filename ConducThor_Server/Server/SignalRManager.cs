@@ -22,15 +22,14 @@ namespace ConducThor_Server.Server
         public delegate void NewClient(Client pClient);
         public delegate void ClientUpdated(Client pClient);
         public delegate void ClientDisconnected(Client pClient);
-        public delegate void NewLogMessage(String pMessage);
         public delegate void NewClientLogMessage(Client pClient, String pMessage);
 
-        List<Client> Clients = new List<Client>();
+        readonly List<Client> _clients = new List<Client>();
 
         public event ClientUpdated ClientUpdatedEvent;
         public event NewClient NewClientEvent;
         public event ClientDisconnected ClientDisconnectedEvent;
-        public event NewLogMessage NewLogMessageEvent;
+        public event Core.NewLogMessage NewLogMessageEvent;
         public event NewClientLogMessage NewConsoleLogMessage;
 
         public void Initialize()
@@ -41,7 +40,7 @@ namespace ConducThor_Server.Server
             CommHub.NewClientLogMessageEvent += NewClientLogMessageEvent;
             CommHub.MachineDataReceivedEvent += (id, data) =>
             {
-                var client = Clients.FirstOrDefault(t => t.ID == id);
+                var client = _clients.FirstOrDefault(t => t.ID == id);
                 if (client != null)
                 {
                     client.ContainerVersion = data.ContainerVersion;
@@ -66,32 +65,32 @@ namespace ConducThor_Server.Server
 
         private void NotifyNewClientEvent(String pClientID)
         {
-            lock (Clients)
+            lock (_clients)
             {
                 //add client if not exist
-                if (Clients.All(t => t.ID != pClientID))
+                if (_clients.All(t => t.ID != pClientID))
                 {
                     App.Current.Dispatcher.Invoke(() =>
                     {
-                        Clients.Add(new Client()
+                        _clients.Add(new Client()
                         {
                             ID = pClientID
                         });
                     });
                 }
-                NewClientEvent?.Invoke(Clients.First(t => t.ID == pClientID));
+                NewClientEvent?.Invoke(_clients.First(t => t.ID == pClientID));
                 NotifyNewLogMessageEvent($"Client connected: {pClientID}");
             }
         }
 
         private void NotifyClientDisconnectedEvent(String pClientID)
         {
-            lock (Clients)
+            lock (_clients)
             {
-                var client = Clients.FirstOrDefault(t => t.ID == pClientID);
+                var client = _clients.FirstOrDefault(t => t.ID == pClientID);
                 if (client != null)
                 {
-                    Clients.Remove(client);
+                    _clients.Remove(client);
                     ClientDisconnectedEvent?.Invoke(client);
                     NotifyNewLogMessageEvent($"Client disconnected: {pClientID}");
                 }
@@ -105,7 +104,7 @@ namespace ConducThor_Server.Server
 
         private void NewClientLogMessageEvent(string pClientID, string pLogMessage)
         {
-            var targetClient = Clients.FirstOrDefault(t => t.ID == pClientID);
+            var targetClient = _clients.FirstOrDefault(t => t.ID == pClientID);
             if (targetClient != null)
             {
                 NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);

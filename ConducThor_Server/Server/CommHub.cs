@@ -25,7 +25,7 @@ namespace ConducThor_Server.Server
         public static event ClientDisconnected ClientDisconnectedEvent;
         public static event MachineDataReceived MachineDataReceivedEvent;
         public static event NewClientLogMessage NewClientLogMessageEvent;
-        public static event SignalRManager.NewLogMessage NewLogMessageEvent;
+        public static event Core.NewLogMessage NewLogMessageEvent;
 
         /// <summary>
         /// Context instance to access client connections to broadcast to
