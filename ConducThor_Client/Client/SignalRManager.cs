@@ -147,7 +147,7 @@ namespace ConducThor_Client.Client
             try
             {
                 LogEvent?.Invoke("Fetch work.");
-                var result = _hub.Invoke<WorkPackage>("FetchWork").Result;
+                var result = _hub.Invoke<WorkPackage>("FetchWork", _machineData).Result;
 
                 if (result != null)
                 {
