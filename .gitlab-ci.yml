@@ -80,6 +80,7 @@ server-deploy:
         -t chemsorly/conducthor . '
     - docker create --name %ASSETCONTAINER_NAME% chemsorly/conducthor
     - docker cp %ASSETCONTAINER_NAME%:C:\\ConducThor_Server\\%CI_BUILD_REF_NAME%\\ C:\\Gitlab-Releases\\ConducThor_Server\\
+    - powershell docker rm $(docker ps -aq) -f
     - docker rmi chemsorly/conducthor -f
 
 client-deploy-windows:
@@ -95,6 +96,7 @@ client-deploy-windows:
     - docker login -u %DOCKER_LOGIN% -p %DOCKER_PASSWORD%
     - docker push chemsorly/keras-cntk-experiment:latest-windows-cpu
     - docker rmi chemsorly/keras-cntk-experiment:latest-windows-cpu
+    - powershell docker rmi $(docker images -q -f dangling=true) -f
     
 client-deploy-ubuntu:
     stage: deploy
@@ -112,6 +114,4 @@ client-deploy-ubuntu:
     - sudo docker push chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
     - sudo docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
     - sudo docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
-
-after_script:
-    - powershell docker rmi $(docker images -q -f dangling=true) -f
+    - sudo docker rmi $(docker images -q -f dangling=true) -f
