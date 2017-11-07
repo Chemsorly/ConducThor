@@ -13,9 +13,9 @@ namespace ConducThor_Shared.Connection
         void Connect(MachineData pMachineData);
 
         /// <summary>
-        /// fetches a work unit from the server to process; TODO: define work unit
+        /// fetches a work unit from the server to process
         /// </summary>
-        void FetchWork();
+        WorkPackage FetchWork(MachineData pMachineData);
 
         /// <summary>
         /// sends result to server after work unit is completed; TODO: define result unit
@@ -27,5 +27,11 @@ namespace ConducThor_Shared.Connection
         /// </summary>
         /// <param name="pStatus">client status structure</param>
         void UpdateStatus(ClientStatus pStatus);
+
+        /// <summary>
+        /// sends the latest console output
+        /// </summary>
+        /// <param name="pMessage">the message</param>
+        void SendConsoleMessage(String pMessage);
     }
 }

@@ -16,39 +16,47 @@ namespace ConducThor_Server
 {
     public class MainWindowViewmodel : INotifyPropertyChanged
     {
-        private SignalRManager _signalrmanager;
+        private Core _core;
+
         public ObservableCollection<ClientViewmodel> ClientList { get; set; }
-
         private Dispatcher dispatcher;
-        private UpdateNotifier _updateNotifier;
 
-        public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!": String.Empty);
+        private List<String> LogMessages = new List<string>();
+        public String Log => String.Join("\n", LogMessages);
+
+        private ClientViewmodel _selectedClient;
+        public ClientViewmodel SelectedClient
+        {
+            get { return _selectedClient; }
+            set { _selectedClient = value; OnPropertyChanged(); OnPropertyChanged(nameof(SelectedClientLogMessages)); }
+        }
+
+        public AsyncObservableCollection<String> SelectedClientLogMessages => SelectedClient?.LogMessages;
+
+        public String VersionStatus => _core?.VersionStatus;
         public void Initialize()
         {
             //int
             dispatcher = Dispatcher.CurrentDispatcher;
             ClientList = new ObservableCollection<ClientViewmodel>();
+            _core = new Core();
+            _core.PropertyChanged += (sender, args) => PropertyChanged?.Invoke(sender, args);
 
-            //init updater
-            _updateNotifier = new UpdateNotifier();
-            _updateNotifier.PropertyChanged += (sender, args) => OnPropertyChanged(nameof(VersionStatus));
-
-           _signalrmanager = new SignalRManager();
-            _signalrmanager.NewClientEvent += pClient =>
+            _core.NewClientEvent += pClient =>
             {
                 dispatcher.Invoke(() =>
                 {
-                    this.ClientList.Add(new ClientViewmodel() {ID = pClient.ID });
+                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID });
                 });
             };
-            _signalrmanager.ClientDisconnectedEvent += pClient =>
+            _core.ClientDisconnectedEvent += pClient =>
             {
                 dispatcher.Invoke(() =>
                 {
                     this.ClientList.Remove(this.ClientList.First(t => t.ID == pClient.ID));
                 });
             };
-            _signalrmanager.ClientUpdatedEvent += delegate(Client pClient)
+            _core.ClientUpdatedEvent += delegate(Client pClient)
             {
                 dispatcher.Invoke(() =>
                 {
@@ -59,13 +67,32 @@ namespace ConducThor_Server
                     }
                 });
             };
+            _core.NewLogMessageEvent += delegate(string message)
+            {
+                dispatcher.Invoke(() =>
+                {
+                    if (message != null)
+                    {
+                        LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                        OnPropertyChanged(nameof(Log));
+                    }
+                });
+            };
+            _core.NewConsoleLogMessage += delegate(Client pClient, string message)
+                {
+                    dispatcher.Invoke(() =>
+                    {
+                        var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
+                        if (client != null && !String.IsNullOrWhiteSpace(message))
+                        {
+                            client.LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                        }
+                    });
+                };
 
-
-            _signalrmanager.Initialize();
-
+            _core.Initialize();
             OnPropertyChanged(String.Empty);
         }
-
 
         #region INotifyPropertyChanged
 

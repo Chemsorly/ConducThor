@@ -7,6 +7,8 @@ namespace ConducThor_Client.Machine
 {
     interface IFilesystemManager
     {
-        
+        byte[] GetFileFromFS(String pFile);
+
+        String GetResultsFromCSV(String pFile);
     }
 }

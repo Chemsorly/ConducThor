@@ -12,7 +12,6 @@ namespace ConducThor_Client
 
         static void Main(string[] args)
         {
-            //how to run with args: dotnet -- --help where "help" is the arg
             if (!args.Any())
             {
                 Console.WriteLine("No args specified");
@@ -21,6 +20,9 @@ namespace ConducThor_Client
 
             //fetch machine data from env variables
             var machinedata = Machine.Machine.GetMachineData();
+
+            //container version
+            Console.WriteLine($"Container version: {machinedata.ContainerVersion}");
 
             //start
             Console.WriteLine($"Target host: {args[0]}");
