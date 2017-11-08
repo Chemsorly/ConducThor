@@ -2,12 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-  </ItemGroup>
 
 </Project>
