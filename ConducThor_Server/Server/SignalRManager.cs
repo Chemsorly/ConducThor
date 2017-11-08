@@ -104,6 +104,10 @@ namespace ConducThor_Server.Server
 
         private void NewClientLogMessageEvent(string pClientID, string pLogMessage)
         {
+            //discard empty messages
+            if (String.IsNullOrWhiteSpace(pLogMessage))
+                return;
+
             var targetClient = _clients.FirstOrDefault(t => t.ID == pClientID);
             if (targetClient != null)
             {
