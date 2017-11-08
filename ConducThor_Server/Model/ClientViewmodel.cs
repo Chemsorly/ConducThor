@@ -20,6 +20,10 @@ namespace ConducThor_Server.Model
         private String _containerVersion = String.Empty;
         private OSEnum? _operatingSystem = null;
         private ProcessingUnitEnum? _processingUnit = null;
+        private bool _isWorking = false;
+        private String _lastEpochDuration = String.Empty;
+        private int _currentEpoch = 0;
+        private String _currentWorkParameters = String.Empty;
 
         public ClientViewmodel(Client pClient)
         {
@@ -63,11 +67,44 @@ namespace ConducThor_Server.Model
             }
         }
 
+        public bool IsWorking
+        {
+            get => _isWorking;
+            set { _isWorking = value; OnPropertyChanged(); }
+        }
+
+        public String LastEpochDuration
+        {
+            get => _lastEpochDuration;
+            set { _lastEpochDuration = value; OnPropertyChanged();
+            }
+        }
+        public int CurrentEpoch
+        {
+            get => _currentEpoch;
+            set
+            {
+                _currentEpoch = value; OnPropertyChanged();
+            }
+        }
+        public String CurrentWorkParameters
+        {
+            get => _currentWorkParameters;
+            set
+            {
+                _currentWorkParameters = value; OnPropertyChanged();
+            }
+        }
+
         public void UpdateValues(Client pClient)
         {
             ContainerVersion = pClient.ContainerVersion;
             OperatingSystem = pClient.OperatingSystem;
             ProcessingUnit = pClient.ProcessingUnit;
+            IsWorking = pClient.IsWorking;
+            LastEpochDuration = pClient.LastEpochDuration;
+            CurrentEpoch = pClient.CurrentEpoch;
+            CurrentWorkParameters = pClient.CurrentWorkParameters;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

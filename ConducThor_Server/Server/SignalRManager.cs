@@ -49,6 +49,18 @@ namespace ConducThor_Server.Server
                     NotifyClientUpdatedEvent(client);
                 }
             };
+            CommHub.ClientStatusUpdatedEvent += (id, status) =>
+            {
+                var client = _clients.FirstOrDefault(t => t.ID == id);
+                if (client != null)
+                {
+                    client.IsWorking = status.IsWorking;
+                    client.LastEpochDuration = status.LastEpochDuration;
+                    client.CurrentEpoch = status.CurrentEpoch;
+                    client.CurrentWorkParameters = status.CurrentWorkParameters;
+                    NotifyClientUpdatedEvent(client);
+                }
+            };
 
             try
             {
