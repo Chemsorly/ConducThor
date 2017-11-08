@@ -16,5 +16,11 @@ namespace ConducThor_Server.Model
         public String ContainerVersion { get; set; }
         public OSEnum OperatingSystem { get; set; }
         public ProcessingUnitEnum ProcessingUnit { get; set; }
+
+        //client status parameters
+        public bool IsWorking { get; set; }
+        public String LastEpochDuration { get; set; }
+        public int CurrentEpoch { get; set; }
+        public String CurrentWorkParameters { get; set; }
     }
 }

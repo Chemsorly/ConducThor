@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ConducThor_Server"
         xmlns:mahapps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="ConducThor" Height="600" Width="800" GlowBrush="Black">
+        Title="ConducThor" Height="800" Width="1600" GlowBrush="Black">
     <mahapps:MetroWindow.RightWindowCommands>
         <mahapps:WindowCommands>
             <TextBlock x:Name="_txtblock_updateavailable" Text="{Binding VersionStatus}"/>
@@ -30,10 +30,7 @@
                     <ListBox Grid.Row="2" Background="{StaticResource AccentColorBrush4}" ItemsSource="{Binding SelectedClientLogMessages, Mode=OneWay}" />
                 </Grid>
             </mahapps:MetroTabItem>
-            <mahapps:MetroTabItem Header="Command Queue">
-
-            </mahapps:MetroTabItem>
-            <mahapps:MetroTabItem Header="Settings">
+            <mahapps:MetroTabItem Header="Queue">
 
             </mahapps:MetroTabItem>
             <mahapps:MetroTabItem Header="Log">

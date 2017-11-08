@@ -20,12 +20,14 @@ namespace ConducThor_Server.Server
         public delegate void ClientDisconnected(String pClientID);
         public delegate void MachineDataReceived(String pClientID, MachineData pMachineData);
         public delegate void NewClientLogMessage(String pClientID, String pLogMessage);
+        public delegate void ClientStatusUpdated(String pClientID, ClientStatus pClientStatus);
 
         public static event NewClient NewClientEvent;
         public static event ClientDisconnected ClientDisconnectedEvent;
         public static event MachineDataReceived MachineDataReceivedEvent;
         public static event NewClientLogMessage NewClientLogMessageEvent;
         public static event Core.NewLogMessage NewLogMessageEvent;
+        public static event ClientStatusUpdated ClientStatusUpdatedEvent;
 
         /// <summary>
         /// Context instance to access client connections to broadcast to
@@ -117,7 +119,7 @@ namespace ConducThor_Server.Server
 
         public void UpdateStatus(ClientStatus pStatus)
         {
-            
+            ClientStatusUpdatedEvent?.Invoke(this.Context.ConnectionId, pStatus);
         }
 
         public void SendConsoleMessage(String pMessage)

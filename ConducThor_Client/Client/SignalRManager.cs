@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ConducThor_Client.Machine;
@@ -32,6 +33,7 @@ namespace ConducThor_Client.Client
 
         private Timer _pollTimer;
         private bool IsWorking = false;
+        private ClientStatus _clientStatus = new ClientStatus();
 
         public SignalRManager(MachineData pMachineData)
         {
@@ -85,11 +87,19 @@ namespace ConducThor_Client.Client
                     return;
 
                 IsWorking = true;
+
                 try
                 {
                     var work = FetchWork();
                     if (work == null)
                         return;
+
+                    //init client status
+                    _clientStatus.IsWorking = true;
+                    _clientStatus.CurrentEpoch = 0;
+                    _clientStatus.LastEpochDuration = "none";
+                    _clientStatus.CurrentWorkParameters = "{not implemented yet :( }";
+                    SendStatusUpdate(_clientStatus);
 
                     NotifyLogMessageEvent("Create process.");
                     foreach (var command in work.Commands)
@@ -124,11 +134,15 @@ namespace ConducThor_Client.Client
                 catch (Exception e)
                 {
                     IsWorking = false;
+                    _clientStatus.IsWorking = false;
+                    SendStatusUpdate(_clientStatus);
                     NotifyLogMessageEvent(e.Message);
                 }
                 finally
                 {
                     IsWorking = false;
+                    _clientStatus.IsWorking = false;
+                    SendStatusUpdate(_clientStatus);
                 }
 
             }, null, 6000, 60000);
@@ -164,6 +178,66 @@ namespace ConducThor_Client.Client
             }
         }
 
+        private void Connection_Received(string obj)
+        {
+            NotifyLogMessageEvent($"Received message from hub: {obj}");
+        }
+
+
+        private void NotifyLogMessageEvent(String pLogMessage)
+        {
+            if (!String.IsNullOrWhiteSpace(pLogMessage))
+            {
+                //check for special messages
+                CheckForStatusMessages(pLogMessage);
+
+                LogEvent?.Invoke(pLogMessage);
+                SendConsoleMessage($"{pLogMessage}");
+            }
+        }
+        private void CheckForStatusMessages(String pMessage)
+        {
+            //check for epoch match
+            var epochmatch = Regex.Matches(pMessage, @"Epoch \d+\/\d+");
+            if (epochmatch.Count > 0)
+            {
+                //get match
+                var match = epochmatch[0].Value;
+
+                //get first numbers
+                var matches = Regex.Matches(match, @"\d+");
+
+                //set value
+                int value;
+                if (int.TryParse(matches[0].Value, out value))
+                {
+                    if (value > _clientStatus.CurrentEpoch)
+                    {
+                        _clientStatus.CurrentEpoch = value;
+                        SendStatusUpdate(_clientStatus);
+                    }
+                }
+                
+            }
+
+            //check for duration match
+            var durationmatch = Regex.Matches(pMessage, @"\d+s");
+            if (durationmatch.Count > 0)
+            {
+                _clientStatus.LastEpochDuration = durationmatch[0].Value;
+                SendStatusUpdate(_clientStatus);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #region server functions
+
         /// <summary>
         /// sends a console message to the server
         /// </summary>
@@ -176,31 +250,24 @@ namespace ConducThor_Client.Client
             }
             catch (Exception ex)
             {
-                //NotifyLogMessageEvent($"ERROR (SendConsoleMessage): {ex.Message}");
+
             }
         }
 
-        private void Connection_Received(string obj)
+        private void SendStatusUpdate(ClientStatus pClientStatus)
         {
-            NotifyLogMessageEvent($"Received message from hub: {obj}");
-        }
-
-
-        private void NotifyLogMessageEvent(String pLogMessage)
-        {
-            if (!String.IsNullOrWhiteSpace(pLogMessage))
+            try
             {
-                LogEvent?.Invoke(pLogMessage);
-                SendConsoleMessage($"{pLogMessage}");
+                _hub.Invoke("UpdateStatus", pClientStatus);
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
     }
 }
