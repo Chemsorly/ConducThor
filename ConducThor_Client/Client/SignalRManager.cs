@@ -188,8 +188,11 @@ namespace ConducThor_Client.Client
 
         private void NotifyLogMessageEvent(String pLogMessage)
         {
-            LogEvent?.Invoke(pLogMessage);
-            SendConsoleMessage($"{pLogMessage}");
+            if (!String.IsNullOrWhiteSpace(pLogMessage))
+            {
+                LogEvent?.Invoke(pLogMessage);
+                SendConsoleMessage($"{pLogMessage}");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
