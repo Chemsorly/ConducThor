@@ -59,8 +59,8 @@ client-build-ubuntu:
     - shell
     - ubuntu
     script:
-    - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/linux-cpu.dockerfile . 
-    - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/linux-gpu.dockerfile . 
+    - sudo docker build --build-arg CONDUCTHOR_VERSION=$PROJECT_VERSION.$CI_BUILD_ID -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/linux-cpu.dockerfile . 
+    - sudo docker build --build-arg CONDUCTHOR_VERSION=$PROJECT_VERSION.$CI_BUILD_ID -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/linux-gpu.dockerfile . 
     - sudo docker rmi chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
 
 server-deploy:
@@ -106,8 +106,8 @@ client-deploy-ubuntu:
     - shell
     - ubuntu
     script: 
-    - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/linux-cpu.dockerfile . 
-    - sudo docker build --build-arg CONDUCTHOR_VERSION=%PROJECT_VERSION%.%CI_BUILD_ID% -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/linux-gpu.dockerfile . 
+    - sudo docker build --build-arg CONDUCTHOR_VERSION=$PROJECT_VERSION.$CI_BUILD_ID -t chemsorly/keras-cntk-experiment:latest-ubuntu-cpu -f ConducThor_Client/linux-cpu.dockerfile . 
+    - sudo docker build --build-arg CONDUCTHOR_VERSION=$PROJECT_VERSION.$CI_BUILD_ID -t chemsorly/keras-cntk-experiment:latest-ubuntu-gpu -f ConducThor_Client/linux-gpu.dockerfile . 
     - sudo docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
     - sudo docker push chemsorly/keras-cntk-experiment:latest-ubuntu-cpu
     - sudo docker push chemsorly/keras-cntk-experiment:latest-ubuntu-gpu
