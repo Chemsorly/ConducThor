@@ -28,12 +28,14 @@ namespace ConducThor_Server
         public ClientViewmodel SelectedClient
         {
             get { return _selectedClient; }
-            set { _selectedClient = value; OnPropertyChanged(); OnPropertyChanged(nameof(SelectedClientLogMessages)); }
+            set { _selectedClient = value; NotifyPropertyChanged(); NotifyPropertyChanged(nameof(SelectedClientLogMessages)); }
         }
 
         public AsyncObservableCollection<String> SelectedClientLogMessages => SelectedClient?.LogMessages;
-
         public String VersionStatus => _core?.VersionStatus;
+        public String ConnectedClientsString => $"Connected Clients: {ClientList?.Count.ToString()}";
+
+
         public void Initialize()
         {
             //int
@@ -47,6 +49,7 @@ namespace ConducThor_Server
                 dispatcher.Invoke(() =>
                 {
                     this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID });
+                    NotifyPropertyChanged(nameof(ConnectedClientsString));
                 });
             };
             _core.ClientDisconnectedEvent += pClient =>
@@ -54,6 +57,7 @@ namespace ConducThor_Server
                 dispatcher.Invoke(() =>
                 {
                     this.ClientList.Remove(this.ClientList.First(t => t.ID == pClient.ID));
+                    NotifyPropertyChanged(nameof(ConnectedClientsString));
                 });
             };
             _core.ClientUpdatedEvent += delegate(Client pClient)
@@ -74,7 +78,7 @@ namespace ConducThor_Server
                     if (message != null)
                     {
                         LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
-                        OnPropertyChanged(nameof(Log));
+                        NotifyPropertyChanged(nameof(Log));
                     }
                 });
             };
@@ -91,7 +95,7 @@ namespace ConducThor_Server
                 };
 
             _core.Initialize();
-            OnPropertyChanged(String.Empty);
+            NotifyPropertyChanged(String.Empty);
         }
 
         #region INotifyPropertyChanged
@@ -99,7 +103,7 @@ namespace ConducThor_Server
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
               PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -23,8 +23,7 @@
                         <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Background="{StaticResource AccentColorBrush4}">
-                        <TextBlock Text="Connected Clients: 0 "/>
-                        <TextBlock Text="Registered Clients: 0 "/>
+                        <TextBlock Text="{Binding ConnectedClientsString}"/>
                     </StackPanel>
                     <DataGrid Grid.Row="1" ItemsSource="{Binding ClientList}" SelectedItem="{Binding SelectedClient}" IsReadOnly="True" />
                     <ListBox Grid.Row="2" Background="{StaticResource AccentColorBrush4}" ItemsSource="{Binding SelectedClientLogMessages, Mode=OneWay}" />
