@@ -13,6 +13,7 @@ namespace ConducThor_Shared
             public String FileName { get; set; }
             public String Arguments { get; set; }
             public String WorkDir { get; set; }
+            public String Parameters { get; set; }
         }
     }
 }

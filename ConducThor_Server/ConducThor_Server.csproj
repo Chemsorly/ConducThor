@@ -157,6 +157,9 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CombinationHelper.cs" />
     <Compile Include="Commands\CommandManager.cs" />
+    <Compile Include="Commands\FilesystemManager.cs" />
+    <Compile Include="Commands\ResultManager.cs" />
+    <Compile Include="Commands\WorkItem.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="MainWindowViewmodel.cs" />
     <Compile Include="Model\Client.cs" />
@@ -166,6 +169,7 @@
     <Compile Include="Server\SignalRManager.cs" />
     <Compile Include="Server\SignalRStartup.cs" />
     <Compile Include="Utility\AsyncObservableCollection.cs" />
+    <Compile Include="Utility\ManagerClass.cs" />
     <Compile Include="Utility\UpdateNotifier.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

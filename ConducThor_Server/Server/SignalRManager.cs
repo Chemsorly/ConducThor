@@ -15,7 +15,7 @@ using Microsoft.Owin.Hosting;
 
 namespace ConducThor_Server.Server
 {
-    public class SignalRManager
+    public class SignalRManager : ManagerClass
     {
         private IDisposable _signalrapp;
 
@@ -29,7 +29,6 @@ namespace ConducThor_Server.Server
         public event ClientUpdated ClientUpdatedEvent;
         public event NewClient NewClientEvent;
         public event ClientDisconnected ClientDisconnectedEvent;
-        public event Core.NewLogMessage NewLogMessageEvent;
         public event NewClientLogMessage NewConsoleLogMessage;
 
         public void Initialize()
@@ -125,11 +124,6 @@ namespace ConducThor_Server.Server
             {
                 NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);
             }
-        }
-
-        private void NotifyNewLogMessageEvent(String pMessage)
-        {
-            NewLogMessageEvent?.Invoke(pMessage);
         }
     }
 }

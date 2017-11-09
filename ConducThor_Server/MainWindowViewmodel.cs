@@ -35,6 +35,9 @@ namespace ConducThor_Server
         public String VersionStatus => _core?.VersionStatus;
         public String ConnectedClientsString => $"Connected Clients: {ClientList?.Count.ToString()}";
 
+        //Queue operations
+
+
 
         public void Initialize()
         {

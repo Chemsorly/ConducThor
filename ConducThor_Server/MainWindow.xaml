@@ -30,7 +30,28 @@
                 </Grid>
             </mahapps:MetroTabItem>
             <mahapps:MetroTabItem Header="Queue">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition />
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Queued operations:" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Text="Running operations:" FontWeight="Bold"/>
+                    <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Parameters"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Parameters"/>
+                            <DataGridTextColumn Header="Start Date"/>
+                            <DataGridTextColumn Header="Assigned Client"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </mahapps:MetroTabItem>
             <mahapps:MetroTabItem Header="Log">
             <Grid>
