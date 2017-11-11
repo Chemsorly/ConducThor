@@ -49,8 +49,8 @@ namespace ConducThor_Server
 
         public void Initialize()
         {
-            //ui
-            this.GenerateWorkCommand = new RelayCommand<object>(GenerateWork);
+            //ui TODO fix error when multithreaded
+            this.GenerateWorkCommand = new RelayCommand<object>(GenerateWork, false);
 
             //int
             dispatcher = Dispatcher.CurrentDispatcher;

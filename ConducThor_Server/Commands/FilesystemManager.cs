@@ -36,18 +36,20 @@ namespace ConducThor_Server.Commands
 
         public bool CheckIfFileExists(String pParameters)
         {
+            var para = CleanParameters(pParameters);
+
             //check directory
-            var dir = System.IO.Directory.Exists(System.IO.Path.Combine(ResultPath, pParameters));
+            var dir = System.IO.Directory.Exists(System.IO.Path.Combine(ResultPath, para));
             if (!dir)
                 return false;
 
             //check model pParameters
-            var file1 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, pParameters,
-                GetModelFilenameFromParameters(pParameters)));
+            var file1 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, para,
+                GetModelFilenameFromParameters(para)));
 
             //check predictions file
-            var file2 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, pParameters,
-                GetPredictionFilenameFromParameters(pParameters)));
+            var file2 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, para,
+                GetPredictionFilenameFromParameters(para)));
 
             if (file1 && file2)
                 return true;
@@ -57,7 +59,10 @@ namespace ConducThor_Server.Commands
         public void WriteResultsToFilesystem(ResultPackage pResults)
         {
             //get params
-            var parameters = pResults.pWorkPackage.Commands.First().Parameters;
+            var parameters = CleanParameters(pResults.pWorkPackage.Commands.First().Parameters);
+
+            //create dir 
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(ResultPath, parameters));
 
             //write model-file
             System.IO.File.WriteAllBytes(System.IO.Path.Combine(ResultPath, parameters, GetModelFilenameFromParameters(parameters)), 
@@ -77,6 +82,11 @@ namespace ConducThor_Server.Commands
         private String GetPredictionFilenameFromParameters(String pParameters)
         {
             return $"results-{pParameters}.csv";
+        }
+
+        private String CleanParameters(String pParameters)
+        {
+            return pParameters.Replace(",", ".");
         }
     }
 }
