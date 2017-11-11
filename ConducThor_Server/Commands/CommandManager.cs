@@ -36,7 +36,15 @@ namespace ConducThor_Server.Commands
 
             //fill up queue // comb separated by
             foreach (var comb in combinations)
-                AddNewWorkItem(String.Join(" ", comb));
+            {
+                var combstring = String.Join(" ", comb);
+
+                //check if result items already exist; if it does, skip this combination
+                if (_resultManager.CheckIfResultExists(combstring))
+                    continue;
+
+                AddNewWorkItem(combstring);
+            }
 
             NotifyNewLogMessageEvent($"Finished creating new set of work parameters. Total: {QueuedWorkItems.Count}");
         }

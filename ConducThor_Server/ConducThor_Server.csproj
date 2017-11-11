@@ -170,6 +170,7 @@
     <Compile Include="Server\SignalRStartup.cs" />
     <Compile Include="Utility\AsyncObservableCollection.cs" />
     <Compile Include="Utility\ManagerClass.cs" />
+    <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="Utility\UpdateNotifier.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

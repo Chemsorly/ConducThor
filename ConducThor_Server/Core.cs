@@ -10,6 +10,8 @@ using ConducThor_Server.Commands;
 using ConducThor_Server.Model;
 using ConducThor_Server.Server;
 using ConducThor_Server.Utility;
+using ConducThor_Shared;
+using ConducThor_Shared.Enums;
 
 namespace ConducThor_Server
 {
@@ -28,6 +30,9 @@ namespace ConducThor_Server
         public event PropertyChangedEventHandler PropertyChanged;
 
         public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!" : String.Empty);
+        public AsyncObservableCollection<WorkItem> QueuedWorkItems => _commandManager.QueuedWorkItems;
+        public AsyncObservableCollection<WorkItem> ActiveWorkItems => _commandManager.ActiveWorkItems;
+
         public override void Initialize()
         {
             //init updater
@@ -41,6 +46,7 @@ namespace ConducThor_Server
             _signalrmanager.ClientUpdatedEvent += delegate(Client client) { ClientUpdatedEvent?.Invoke(client); };
             _signalrmanager.NewLogMessageEvent += NotifyNewLogMessageEvent;
             _signalrmanager.NewConsoleLogMessage += delegate (Client pClient, string message) { NewConsoleLogMessage?.Invoke(pClient,message); };
+            _signalrmanager.WorkRequestedEvent += SignalrmanagerOnWorkRequestedEvent;
             _signalrmanager.Initialize();
 
             //create command manager
@@ -50,6 +56,17 @@ namespace ConducThor_Server
 
             base.Initialize();
         }
+
+        public void GenerateWorkUnits(List<List<double>> pWorkParameters)
+        {
+            _commandManager.CreateWorkParameters(pWorkParameters);
+        }
+
+        private WorkPackage SignalrmanagerOnWorkRequestedEvent(OSEnum pos, string pclientid)
+        {
+            return _commandManager.FetchWork(pos, pclientid);
+        }
+
 
         #region INotifyPropertyChanged
         [NotifyPropertyChangedInvocator]

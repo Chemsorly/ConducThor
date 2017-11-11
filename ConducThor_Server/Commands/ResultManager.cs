@@ -20,9 +20,9 @@ namespace ConducThor_Server.Commands
             base.Initialize();
         }
 
-        public bool CheckIfResultExists()
+        public bool CheckIfResultExists(String pWorkparameters)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VerifyAndSave(ResultPackage pResults)

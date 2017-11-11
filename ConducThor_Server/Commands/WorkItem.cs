@@ -9,7 +9,7 @@ using ConducThor_Shared.Enums;
 
 namespace ConducThor_Server.Commands
 {
-    class WorkItem
+    public class WorkItem
     {
         public delegate void OnTimeoutHappened(WorkItem sender);
 

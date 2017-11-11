@@ -20,5 +20,10 @@ namespace ConducThor_Server.Commands
         {
             throw new NotImplementedException();
         }
+
+        public void WriteResultsToFilesystem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
