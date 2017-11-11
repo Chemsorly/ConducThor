@@ -22,12 +22,27 @@ namespace ConducThor_Server.Commands
 
         public bool CheckIfResultExists(String pWorkparameters)
         {
-            return false;
+            return _filesystemManager.CheckIfFileExists(pWorkparameters);
         }
 
         public bool VerifyAndSave(ResultPackage pResults)
         {
-            throw new NotImplementedException();
+            if (_filesystemManager.CheckIfFileExists(pResults.pWorkPackage.Commands.First().Parameters))
+            {
+                NotifyNewLogMessageEvent($"[ERROR] Attempting to write duplicate file for {pResults.pWorkPackage.Commands.First().Parameters}");
+                return false;
+            }
+
+            try
+            {
+                _filesystemManager.WriteResultsToFilesystem(pResults);
+            }
+            catch (Exception ex)
+            {
+                NotifyNewLogMessageEvent($"[ERROR] {ex.Message}");
+                return false;
+            }
+            return true;
         }
     }
 }

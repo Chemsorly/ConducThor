@@ -67,13 +67,13 @@ namespace ConducThor_Server.Commands
                             WorkDir = "/root/app",
                             Parameters = pParameter
                         },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py {pParameter}\"",
-                            WorkDir = "/root/app/MA-C2K-LSTM/code",
-                            Parameters = pParameter
-                        }
+                        //new WorkPackage.Command()
+                        //{
+                        //    FileName = "/bin/bash",
+                        //    Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py {pParameter}\"",
+                        //    WorkDir = "/root/app/MA-C2K-LSTM/code",
+                        //    Parameters = pParameter
+                        //}
                     }
                 };
             if (pOS == OSEnum.Windows)
@@ -89,13 +89,13 @@ namespace ConducThor_Server.Commands
                             WorkDir = "C:\\app\\",
                             Parameters = pParameter
                         },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "python",
-                            Arguments = $"train_c2k.py {pParameter}",
-                            WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
-                            Parameters = pParameter
-                        }
+                        //new WorkPackage.Command()
+                        //{
+                        //    FileName = "python",
+                        //    Arguments = $"train_c2k.py {pParameter}",
+                        //    WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
+                        //    Parameters = pParameter
+                        //}
                     }
                 };
             return null;

@@ -25,6 +25,7 @@ namespace ConducThor_Server.Server
         public delegate void ClientDisconnected(Client pClient);
         public delegate void NewClientLogMessage(Client pClient, String pMessage);
         public delegate WorkPackage WorkRequested(OSEnum pOS, String pClientID);
+        public delegate void ResultsReceived(ResultPackage pResults, String pClientID);
 
         readonly List<Client> _clients = new List<Client>();
 
@@ -33,6 +34,7 @@ namespace ConducThor_Server.Server
         public event ClientDisconnected ClientDisconnectedEvent;
         public event NewClientLogMessage NewConsoleLogMessage;
         public event WorkRequested WorkRequestedEvent;
+        public event ResultsReceived ResultsReceivedEvent;
 
         public override void Initialize()
         {
@@ -64,6 +66,7 @@ namespace ConducThor_Server.Server
                 }
             };
             CommHub.WorkRequestedEvent += (os, id) => WorkRequestedEvent?.Invoke(os, id);
+            CommHub.ResultsReceivedEvent += (results, id) => ResultsReceivedEvent?.Invoke(results, id);
 
             try
             {

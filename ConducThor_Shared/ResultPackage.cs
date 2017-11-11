@@ -6,5 +6,8 @@ namespace ConducThor_Shared
 {
     public class ResultPackage
     {
+        public WorkPackage pWorkPackage { get; set; }
+        public byte[] ModelFile { get; set; }
+        public byte[] PredictionFile { get; set; }
     }
 }

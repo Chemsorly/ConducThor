@@ -47,6 +47,7 @@ namespace ConducThor_Server
             _signalrmanager.NewLogMessageEvent += NotifyNewLogMessageEvent;
             _signalrmanager.NewConsoleLogMessage += delegate (Client pClient, string message) { NewConsoleLogMessage?.Invoke(pClient,message); };
             _signalrmanager.WorkRequestedEvent += SignalrmanagerOnWorkRequestedEvent;
+            _signalrmanager.ResultsReceivedEvent += SignalrmanagerOnResultsReceivedEvent;
             _signalrmanager.Initialize();
 
             //create command manager
@@ -55,6 +56,11 @@ namespace ConducThor_Server
             _commandManager.Initialize();
 
             base.Initialize();
+        }
+
+        private void SignalrmanagerOnResultsReceivedEvent(ResultPackage pResults, string pClientID)
+        {
+            _commandManager.SendResults(pResults);
         }
 
         public void GenerateWorkUnits(List<List<double>> pWorkParameters)

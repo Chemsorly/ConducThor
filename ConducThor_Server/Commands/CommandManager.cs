@@ -67,7 +67,7 @@ namespace ConducThor_Server.Commands
 
         public void SendResults(ResultPackage pResults)
         {
-            
+            _resultManager.VerifyAndSave(pResults);
         }
 
         private void AddNewWorkItem(String pParameters)

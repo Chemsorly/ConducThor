@@ -6,14 +6,9 @@ namespace ConducThor_Client.Machine
 {
     class LinuxFilesystemManager : IFilesystemManager
     {
-        public byte[] GetFileFromFS(string pFile)
+        public byte[] GetFileFromFilesystem(string pFile)
         {
-            throw new NotImplementedException();
-        }
-
-        public string GetResultsFromCSV(string pFile)
-        {
-            throw new NotImplementedException();
+            return System.IO.File.ReadAllBytes(pFile);
         }
     }
 }

@@ -6,12 +6,7 @@ namespace ConducThor_Client.Machine
 {
     class WindowsFilesystemManager : IFilesystemManager
     {
-        public byte[] GetFileFromFS(string pFile)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetResultsFromCSV(string pFile)
+        public byte[] GetFileFromFilesystem(string pFile)
         {
             throw new NotImplementedException();
         }

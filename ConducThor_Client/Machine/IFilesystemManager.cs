@@ -7,8 +7,9 @@ namespace ConducThor_Client.Machine
 {
     interface IFilesystemManager
     {
-        byte[] GetFileFromFS(String pFile);
+        byte[] GetFileFromFilesystem(String pFile);
 
-        String GetResultsFromCSV(String pFile);
+        //https://stackoverflow.com/questions/38168391/cross-platform-file-name-handling-in-net-core
+        //Console.WriteLine("..{0}Data{0}uploads{0}{{filename}}", Path.DirectorySeparatorChar);
     }
 }
