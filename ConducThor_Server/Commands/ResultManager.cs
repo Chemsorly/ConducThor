@@ -12,15 +12,10 @@ namespace ConducThor_Server.Commands
     {
         private FilesystemManager _filesystemManager;
 
-        public ResultManager()
+        public override void Initialize()
         {
             _filesystemManager = new FilesystemManager();
             _filesystemManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
-        }
-
-        public override void Initialize()
-        {
-
             _filesystemManager.Initialize();
             base.Initialize();
         }

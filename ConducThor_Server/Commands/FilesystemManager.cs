@@ -10,11 +10,6 @@ namespace ConducThor_Server.Commands
 {
     class FilesystemManager : ManagerClass
     {
-        public FilesystemManager()
-        {
-            
-        }
-
         public override void Initialize()
         {
 

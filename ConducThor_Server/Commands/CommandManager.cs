@@ -18,17 +18,13 @@ namespace ConducThor_Server.Commands
         public AsyncObservableCollection<WorkItem> QueuedWorkItems { get; set; }
         public AsyncObservableCollection<WorkItem> ActiveWorkItems { get; set; }
 
-        public CommandManager()
-        {
-            _resultManager = new ResultManager();
-            _resultManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
-        }
-
         public override void Initialize()
         {
             QueuedWorkItems = new AsyncObservableCollection<WorkItem>();
             ActiveWorkItems = new AsyncObservableCollection<WorkItem>();
 
+            _resultManager = new ResultManager();
+            _resultManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
             _resultManager.Initialize();
             base.Initialize();
         }
