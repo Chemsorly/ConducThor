@@ -12,6 +12,11 @@ namespace ConducThor_Server.Utility
 
         public event NewLogMessage NewLogMessageEvent;
 
+        public virtual void Initialize()
+        {
+            NotifyNewLogMessageEvent($"{this.GetType().Name} initialized.");
+        }
+
         protected void NotifyNewLogMessageEvent(String pMessage)
         {
             NewLogMessageEvent?.Invoke(pMessage);

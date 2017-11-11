@@ -24,13 +24,13 @@ namespace ConducThor_Server.Commands
             _resultManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
             QueuedWorkItems = new AsyncObservableCollection<WorkItem>();
             ActiveWorkItems = new AsyncObservableCollection<WorkItem>();
 
             _resultManager.Initialize();
-            NotifyNewLogMessageEvent("Command Manager initialized.");
+            base.Initialize();
         }
 
         public void CreateWorkParameters(List<List<double>> pCombinations)

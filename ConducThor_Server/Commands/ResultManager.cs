@@ -18,11 +18,11 @@ namespace ConducThor_Server.Commands
             _filesystemManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
 
             _filesystemManager.Initialize();
-            NotifyNewLogMessageEvent("Result Manager initialized.");
+            base.Initialize();
         }
 
         public bool CheckIfResultExists()

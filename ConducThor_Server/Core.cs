@@ -28,7 +28,7 @@ namespace ConducThor_Server
         public event PropertyChangedEventHandler PropertyChanged;
 
         public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!" : String.Empty);
-        public void Initialize()
+        public override void Initialize()
         {
             //init updater
             _updateNotifier = new UpdateNotifier();
@@ -47,6 +47,8 @@ namespace ConducThor_Server
             _commandManager = new CommandManager();
             _commandManager.NewLogMessageEvent += NotifyNewLogMessageEvent;
             _commandManager.Initialize();
+
+            base.Initialize();
         }
 
         #region INotifyPropertyChanged

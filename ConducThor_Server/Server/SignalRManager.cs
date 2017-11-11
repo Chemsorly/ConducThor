@@ -31,7 +31,7 @@ namespace ConducThor_Server.Server
         public event ClientDisconnected ClientDisconnectedEvent;
         public event NewClientLogMessage NewConsoleLogMessage;
 
-        public void Initialize()
+        public override void Initialize()
         {
             CommHub.NewClientEvent += NotifyNewClientEvent;
             CommHub.ClientDisconnectedEvent += NotifyClientDisconnectedEvent;
@@ -71,7 +71,7 @@ namespace ConducThor_Server.Server
                 NotifyNewLogMessageEvent($"Could not start SignalR listener on port 8080. Are you running the application as admin? Exception: {ex.Message}");
             }
 
-            NotifyNewLogMessageEvent("SignalR manager initialized");
+            base.Initialize();
         }
 
         private void NotifyNewClientEvent(String pClientID)

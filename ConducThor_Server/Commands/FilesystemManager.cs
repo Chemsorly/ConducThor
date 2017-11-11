@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using ConducThor_Server.Utility;
@@ -14,10 +15,10 @@ namespace ConducThor_Server.Commands
             
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
 
-            NotifyNewLogMessageEvent("Filesystem Manager initialized");
+            base.Initialize();
         }
 
         public bool CheckIfFileExists()
