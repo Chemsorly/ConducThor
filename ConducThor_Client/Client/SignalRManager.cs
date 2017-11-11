@@ -98,7 +98,7 @@ namespace ConducThor_Client.Client
                     _clientStatus.IsWorking = true;
                     _clientStatus.CurrentEpoch = 0;
                     _clientStatus.LastEpochDuration = "none";
-                    _clientStatus.CurrentWorkParameters = "{not implemented yet :( }";
+                    _clientStatus.CurrentWorkParameters = work.Commands.First().Parameters;
                     SendStatusUpdate(_clientStatus);
 
                     NotifyLogMessageEvent("Create process.");

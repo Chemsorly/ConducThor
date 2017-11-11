@@ -64,13 +64,15 @@ namespace ConducThor_Server.Commands
                         {
                             FileName = "/bin/bash",
                             Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                            WorkDir = "/root/app"
+                            WorkDir = "/root/app",
+                            Parameters = pParameter
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
                             Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py {pParameter}\"",
-                            WorkDir = "/root/app/MA-C2K-LSTM/code"
+                            WorkDir = "/root/app/MA-C2K-LSTM/code",
+                            Parameters = pParameter
                         }
                     }
                 };
@@ -84,13 +86,15 @@ namespace ConducThor_Server.Commands
                         {
                             FileName = "cmd",
                             Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                            WorkDir = "C:\\app\\"
+                            WorkDir = "C:\\app\\",
+                            Parameters = pParameter
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "python",
                             Arguments = $"train_c2k.py {pParameter}",
-                            WorkDir = "C:\\app\\MA-C2K-LSTM\\code"
+                            WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
+                            Parameters = pParameter
                         }
                     }
                 };
