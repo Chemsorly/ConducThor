@@ -40,6 +40,8 @@ namespace ConducThor_Server
         //Queue operations
         public AsyncObservableCollection<WorkItem> QueuedWorkItems => _core?.QueuedWorkItems;
         public AsyncObservableCollection<WorkItem> ActiveWorkItems => _core?.ActiveWorkItems;
+        public String QueuedOperationsCount => $"Queued Operations: {QueuedWorkItems?.Count}";
+        public String ActiveOperationsCount => $"Active Operations: {ActiveWorkItems?.Count}";
 
         //ui
         public ICommand GenerateWorkCommand { get; set; }
@@ -107,6 +109,9 @@ namespace ConducThor_Server
                 };
 
             _core.Initialize();
+
+            QueuedWorkItems.CollectionChanged += (sender, args) => NotifyPropertyChanged(nameof(QueuedOperationsCount));
+            ActiveWorkItems.CollectionChanged += (sender, args) => NotifyPropertyChanged(nameof(ActiveOperationsCount));
             NotifyPropertyChanged(String.Empty);
         }
 

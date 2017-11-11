@@ -42,10 +42,10 @@
                             <ColumnDefinition Width="13*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Queued operations:" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="0" Text="{Binding QueuedOperationsCount}" FontWeight="Bold"/>
                         <Button Command="{Binding GenerateWorkCommand}" Grid.Column="1" Content="Generate Work" />
                     </Grid>
-                    <TextBlock Grid.Row="2" Text="Running operations:" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Text="{Binding ActiveOperationsCount}" FontWeight="Bold"/>
                     <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding QueuedWorkItems}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Parameters" Binding="{Binding Parameters, Mode=OneWay}"/>
