@@ -34,7 +34,7 @@ namespace ConducThor_Server
         }
 
         public AsyncObservableCollection<String> SelectedClientLogMessages => SelectedClient?.LogMessages;
-        public String VersionStatus => _core?.VersionStatus;
+        //public String VersionStatus => _core?.VersionStatus;
         public String ConnectedClientsString => $"Connected Clients: {ClientList?.Count.ToString()}";
 
         //Queue operations

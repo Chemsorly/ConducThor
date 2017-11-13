@@ -29,15 +29,15 @@ namespace ConducThor_Server
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!" : String.Empty);
+        //public String VersionStatus => _updateNotifier == null ? String.Empty : (_updateNotifier.Status == Utility.VersionStatus.UpdateAvailable ? " Update available!" : String.Empty);
         public AsyncObservableCollection<WorkItem> QueuedWorkItems => _commandManager.QueuedWorkItems;
         public AsyncObservableCollection<WorkItem> ActiveWorkItems => _commandManager.ActiveWorkItems;
 
         public override void Initialize()
         {
             //init updater
-            _updateNotifier = new UpdateNotifier();
-            _updateNotifier.PropertyChanged += (sender, args) => OnPropertyChanged(nameof(VersionStatus));
+            //_updateNotifier = new UpdateNotifier();
+            //_updateNotifier.PropertyChanged += (sender, args) => OnPropertyChanged(nameof(VersionStatus));
 
             //forward signalr manager
             _signalrmanager = new SignalRManager();
