@@ -20,7 +20,7 @@ namespace ConducThor_Shared.Connection
         /// <summary>
         /// sends result to server after work unit is completed; TODO: define result unit
         /// </summary>
-        void SendResults();
+        void SendResults(ResultPackage pResults);
 
         /// <summary>
         /// updates the computing machines status

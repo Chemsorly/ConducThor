@@ -28,9 +28,6 @@ namespace ConducThor_Client.Client
         public delegate void NewConsoleMessage(String pMessage);
         public event LogEventHandler LogEvent;
 
-        private ICommandManager _commandManager;
-        private IFilesystemManager _filesystemManager;
-
         private Timer _pollTimer;
         private bool IsWorking = false;
         private ClientStatus _clientStatus = new ClientStatus();
@@ -38,31 +35,6 @@ namespace ConducThor_Client.Client
         public SignalRManager(MachineData pMachineData)
         {
             _machineData = pMachineData;
-            
-            //create os specific managers manager based on OS type
-            if (_machineData.OperatingSystem == OSEnum.Windows)
-            {
-                _commandManager = new WindowsCommandManager();
-                _filesystemManager = new WindowsFilesystemManager();
-                NotifyLogMessageEvent("WindowsOS managers initialized");
-            }
-            else if (_machineData.OperatingSystem == OSEnum.Ubuntu)
-            {
-                _commandManager = new LinuxCommandManager();
-                _filesystemManager = new LinuxFilesystemManager();
-                NotifyLogMessageEvent("LinuxOS managers initialized");
-            }
-            else
-            {
-                throw new Exception("undefined operating system");
-            }
-
-            //subscribe to events
-            _commandManager.NewConsoleMessageEvent += delegate(string message)
-            {
-                NotifyLogMessageEvent(message);
-                SendConsoleMessage(message);
-            };
         }
 
         public void Initialize(String pEndpoint)
@@ -98,14 +70,15 @@ namespace ConducThor_Client.Client
                     _clientStatus.IsWorking = true;
                     _clientStatus.CurrentEpoch = 0;
                     _clientStatus.LastEpochDuration = "none";
-                    _clientStatus.CurrentWorkParameters = "{not implemented yet :( }";
+                    _clientStatus.CurrentWorkParameters = work.Commands.First().Parameters;
                     SendStatusUpdate(_clientStatus);
 
+                    //run process
                     NotifyLogMessageEvent("Create process.");
                     foreach (var command in work.Commands)
                     {
                         NotifyLogMessageEvent($"[DEBUG] Create process for: {command.FileName} {command.Arguments} {command.WorkDir}");
-                        Task.Factory.StartNew(()=>
+                        Task.Factory.StartNew(() =>
                         {
                             var StartInfo = new ProcessStartInfo()
                             {
@@ -130,6 +103,20 @@ namespace ConducThor_Client.Client
                         }).Wait();
                     }
                     NotifyLogMessageEvent("Process finished.");
+
+                    //get results
+                    NotifyLogMessageEvent($"[DEBUG] Read target model file");
+                    var modelfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetModelFile.ToArray()));
+                    var predictionfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetPredictionFile.ToArray()));
+                    NotifyLogMessageEvent($"[DEBUG] {modelfile.Length} bytes");
+                    SendResults(new ResultPackage()
+                    {
+                        WorkPackage = work,
+                        ModelFile = modelfile,
+                        PredictionFile = predictionfile
+                    });
+                    NotifyLogMessageEvent($"[DEBUG] Finished reading file testfile.test");
+
                 }
                 catch (Exception e)
                 {
@@ -160,7 +147,7 @@ namespace ConducThor_Client.Client
         {
             try
             {
-                LogEvent?.Invoke("Fetch work.");
+                NotifyLogMessageEvent("Fetch work.");
                 var result = _hub.Invoke<WorkPackage>("FetchWork", _machineData).Result;
 
                 if (result != null)
@@ -174,7 +161,23 @@ namespace ConducThor_Client.Client
             catch (Exception e)
             {
                 NotifyLogMessageEvent($"Fetch work failed: {e.Message}");
-                throw;
+                return null;
+            }
+        }
+
+        private void SendResults(ResultPackage pResults)
+        {
+            if (pResults == null)
+                return;
+
+            try
+            {
+                NotifyLogMessageEvent($"Send results");
+                _hub.Invoke("SendResults", pResults).ContinueWith(t => NotifyLogMessageEvent($"Results sent."), TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
+            catch (Exception e)
+            {
+                NotifyLogMessageEvent($"SendResults failed: {e.Message}");
             }
         }
 

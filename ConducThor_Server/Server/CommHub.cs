@@ -28,6 +28,8 @@ namespace ConducThor_Server.Server
         public static event NewClientLogMessage NewClientLogMessageEvent;
         public static event Core.NewLogMessage NewLogMessageEvent;
         public static event ClientStatusUpdated ClientStatusUpdatedEvent;
+        public static event SignalRManager.WorkRequested WorkRequestedEvent;
+        public static event SignalRManager.ResultsReceived ResultsReceivedEvent;
 
         /// <summary>
         /// Context instance to access client connections to broadcast to
@@ -70,51 +72,15 @@ namespace ConducThor_Server.Server
         {
             //debug test
             NewLogMessageEvent?.Invoke($"New Work Request received from {this.Context.ConnectionId}");
+            var work = WorkRequestedEvent?.Invoke(pMachineData.OperatingSystem, this.Context.ConnectionId);
+            return work;
+        }
 
-            if(pMachineData.OperatingSystem == OSEnum.Ubuntu)
-                return new WorkPackage()
-                {
-                    //example ubuntu commands
-                    Commands = new List<WorkPackage.Command>()
-                    {
-                        new WorkPackage.Command()
-                        {
-                            FileName = "/bin/bash",
-                            Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                            WorkDir = "/root/app"
-                        },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "/bin/bash",
-                            Arguments = "-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py\"",
-                            WorkDir = "/root/app/MA-C2K-LSTM/code"
-                        }
-                    }
-                };
-            else if (pMachineData.OperatingSystem == OSEnum.Windows)
-                return new WorkPackage()
-                {
-                    //example windows commands
-                    Commands = new List<WorkPackage.Command>()
-                    {
-                        new WorkPackage.Command()
-                        {
-                            FileName = "cmd",
-                            Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
-                            WorkDir = "C:\\app\\"
-                        },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "python",
-                            Arguments = "train_c2k.py",
-                            WorkDir = "C:\\app\\MA-C2K-LSTM\\code"
-                        }
-                    }
-                };
-            else
-            {
-                return null;
-            }
+        public void SendResults(ResultPackage pResults)
+        {
+            //debug
+            NewLogMessageEvent?.Invoke($"Result files received from {this.Context.ConnectionId} with {pResults.ModelFile.Length} and {pResults.PredictionFile.Length} bytes");
+            ResultsReceivedEvent?.Invoke(pResults, this.Context.ConnectionId);
         }
 
         public void UpdateStatus(ClientStatus pStatus)

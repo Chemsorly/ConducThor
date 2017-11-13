@@ -10,12 +10,13 @@ using System.Timers;
 using ConducThor_Server.Model;
 using ConducThor_Server.Utility;
 using ConducThor_Shared;
+using ConducThor_Shared.Enums;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 
 namespace ConducThor_Server.Server
 {
-    public class SignalRManager
+    public class SignalRManager : ManagerClass
     {
         private IDisposable _signalrapp;
 
@@ -23,16 +24,19 @@ namespace ConducThor_Server.Server
         public delegate void ClientUpdated(Client pClient);
         public delegate void ClientDisconnected(Client pClient);
         public delegate void NewClientLogMessage(Client pClient, String pMessage);
+        public delegate WorkPackage WorkRequested(OSEnum pOS, String pClientID);
+        public delegate void ResultsReceived(ResultPackage pResults, String pClientID);
 
         readonly List<Client> _clients = new List<Client>();
 
         public event ClientUpdated ClientUpdatedEvent;
         public event NewClient NewClientEvent;
         public event ClientDisconnected ClientDisconnectedEvent;
-        public event Core.NewLogMessage NewLogMessageEvent;
         public event NewClientLogMessage NewConsoleLogMessage;
+        public event WorkRequested WorkRequestedEvent;
+        public event ResultsReceived ResultsReceivedEvent;
 
-        public void Initialize()
+        public override void Initialize()
         {
             CommHub.NewClientEvent += NotifyNewClientEvent;
             CommHub.ClientDisconnectedEvent += NotifyClientDisconnectedEvent;
@@ -61,6 +65,8 @@ namespace ConducThor_Server.Server
                     NotifyClientUpdatedEvent(client);
                 }
             };
+            CommHub.WorkRequestedEvent += (os, id) => WorkRequestedEvent?.Invoke(os, id);
+            CommHub.ResultsReceivedEvent += (results, id) => ResultsReceivedEvent?.Invoke(results, id);
 
             try
             {
@@ -72,7 +78,7 @@ namespace ConducThor_Server.Server
                 NotifyNewLogMessageEvent($"Could not start SignalR listener on port 8080. Are you running the application as admin? Exception: {ex.Message}");
             }
 
-            NotifyNewLogMessageEvent("SignalR manager initialized");
+            base.Initialize();
         }
 
         private void NotifyNewClientEvent(String pClientID)
@@ -125,11 +131,6 @@ namespace ConducThor_Server.Server
             {
                 NewConsoleLogMessage?.Invoke(targetClient, pLogMessage);
             }
-        }
-
-        private void NotifyNewLogMessageEvent(String pMessage)
-        {
-            NewLogMessageEvent?.Invoke(pMessage);
         }
     }
 }
