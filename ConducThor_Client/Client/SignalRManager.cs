@@ -105,9 +105,9 @@ namespace ConducThor_Client.Client
                     NotifyLogMessageEvent("Process finished.");
 
                     //get results
-                    NotifyLogMessageEvent($"[DEBUG] Read file model_78-1.28.h5");
-                    var modelfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(@"MA-C2K-LSTM", "testfile.test"));
-                    var predictionfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(@"MA-C2K-LSTM","code","testfile.test"));
+                    NotifyLogMessageEvent($"[DEBUG] Read target model file");
+                    var modelfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetModelFile.ToArray()));
+                    var predictionfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetPredictionFile.ToArray()));
                     NotifyLogMessageEvent($"[DEBUG] {modelfile.Length} bytes");
                     SendResults(new ResultPackage()
                     {
