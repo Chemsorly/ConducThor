@@ -28,9 +28,6 @@ namespace ConducThor_Client.Client
         public delegate void NewConsoleMessage(String pMessage);
         public event LogEventHandler LogEvent;
 
-        private ICommandManager _commandManager;
-        private IFilesystemManager _filesystemManager;
-
         private Timer _pollTimer;
         private bool IsWorking = false;
         private ClientStatus _clientStatus = new ClientStatus();
@@ -38,31 +35,6 @@ namespace ConducThor_Client.Client
         public SignalRManager(MachineData pMachineData)
         {
             _machineData = pMachineData;
-            
-            //create os specific managers manager based on OS type
-            if (_machineData.OperatingSystem == OSEnum.Windows)
-            {
-                _commandManager = new WindowsCommandManager();
-                _filesystemManager = new WindowsFilesystemManager();
-                NotifyLogMessageEvent("WindowsOS managers initialized");
-            }
-            else if (_machineData.OperatingSystem == OSEnum.Ubuntu)
-            {
-                _commandManager = new LinuxCommandManager();
-                _filesystemManager = new LinuxFilesystemManager();
-                NotifyLogMessageEvent("LinuxOS managers initialized");
-            }
-            else
-            {
-                throw new Exception("undefined operating system");
-            }
-
-            //subscribe to events
-            _commandManager.NewConsoleMessageEvent += delegate(string message)
-            {
-                NotifyLogMessageEvent(message);
-                SendConsoleMessage(message);
-            };
         }
 
         public void Initialize(String pEndpoint)
@@ -139,7 +111,7 @@ namespace ConducThor_Client.Client
                     NotifyLogMessageEvent($"[DEBUG] {modelfile.Length} bytes");
                     SendResults(new ResultPackage()
                     {
-                        pWorkPackage = work,
+                        WorkPackage = work,
                         ModelFile = modelfile,
                         PredictionFile = predictionfile
                     });

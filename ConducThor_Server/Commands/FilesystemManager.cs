@@ -59,7 +59,7 @@ namespace ConducThor_Server.Commands
         public void WriteResultsToFilesystem(ResultPackage pResults)
         {
             //get params
-            var parameters = CleanParameters(pResults.pWorkPackage.Commands.First().Parameters);
+            var parameters = CleanParameters(pResults.WorkPackage.Commands.First().Parameters);
 
             //create dir 
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(ResultPath, parameters));

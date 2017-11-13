@@ -27,9 +27,9 @@ namespace ConducThor_Server.Commands
 
         public bool VerifyAndSave(ResultPackage pResults)
         {
-            if (_filesystemManager.CheckIfFileExists(pResults.pWorkPackage.Commands.First().Parameters))
+            if (_filesystemManager.CheckIfFileExists(pResults.WorkPackage.Commands.First().Parameters))
             {
-                NotifyNewLogMessageEvent($"[ERROR] Attempting to write duplicate file for {pResults.pWorkPackage.Commands.First().Parameters}");
+                NotifyNewLogMessageEvent($"[ERROR] Attempting to write duplicate file for {pResults.WorkPackage.Commands.First().Parameters}");
                 return false;
             }
 

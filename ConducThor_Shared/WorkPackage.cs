@@ -14,6 +14,8 @@ namespace ConducThor_Shared
             public String Arguments { get; set; }
             public String WorkDir { get; set; }
             public String Parameters { get; set; }
+            public String TargetModelFile { get; set; }
+            public String TargetPredictionFile { get; set; }
         }
     }
 }
