@@ -54,6 +54,9 @@ namespace ConducThor_Server.Commands
 
         private WorkPackage CreateWorkPackage(OSEnum pOS, String pParameter)
         {
+            //clean
+            var paras = pParameter.Replace(",", ".");
+
             if (pOS == OSEnum.Ubuntu)
                 return new WorkPackage()
                 {
@@ -65,21 +68,21 @@ namespace ConducThor_Server.Commands
                             FileName = "/bin/bash",
                             Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
                             WorkDir = "/root/app",
-                            Parameters = pParameter
+                            Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k_experiment.py {pParameter}\"",
+                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k_experiment.py {paras}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
-                            Parameters = pParameter
+                            Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
                             Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python make_predictions_c2k.py\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
-                            Parameters = pParameter
+                            Parameters = paras
                         },
                     },
                     TargetModelFile = new List<string>() { "MA-C2K-LSTM","code", "output_files", "models", "model-latest.h5"},
@@ -96,21 +99,21 @@ namespace ConducThor_Server.Commands
                             FileName = "cmd",
                             Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
                             WorkDir = "C:\\app\\",
-                            Parameters = pParameter
+                            Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "python",
-                            Arguments = $"train_c2k_experiment.py {pParameter}",
+                            Arguments = $"train_c2k_experiment.py {paras}",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
-                            Parameters = pParameter
+                            Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "python",
                             Arguments = $"make_predictions_c2k.py",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
-                            Parameters = pParameter
+                            Parameters = paras
                         }
                     },
                     TargetModelFile = new List<string>() { "MA-C2K-LSTM", "code", "output_files", "models", "model-latest.h5" },
