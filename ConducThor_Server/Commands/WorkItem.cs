@@ -70,7 +70,7 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k.py {pParameter}\"",
+                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k_experiment.py {pParameter}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
                             Parameters = pParameter
                         },
@@ -101,7 +101,7 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "python",
-                            Arguments = $"train_c2k.py {pParameter}",
+                            Arguments = $"train_c2k_experiment.py {pParameter}",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
                             Parameters = pParameter
                         },
