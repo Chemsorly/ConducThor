@@ -6,7 +6,7 @@ WORKDIR 'C:\\build\\'
 RUN dotnet restore
 RUN dotnet publish .\ConducThor_Client\ConducThor_Client.csproj
 
-FROM chemsorly/keras-cntk:latest-windows-py2-cpu
+FROM chemsorly/keras-cntk:1.0.1-windows-py2-cpu
 SHELL ["powershell"]
 
 ARG CONDUCTHOR_VERSION
