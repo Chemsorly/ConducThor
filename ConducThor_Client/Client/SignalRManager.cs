@@ -75,6 +75,7 @@ namespace ConducThor_Client.Client
 
                     //run process
                     NotifyLogMessageEvent("Create process.");
+                    DateTime startTime = DateTime.UtcNow;
                     foreach (var command in work.Commands)
                     {
                         NotifyLogMessageEvent($"[DEBUG] Create process for: {command.FileName} {command.Arguments} {command.WorkDir}");
@@ -112,6 +113,7 @@ namespace ConducThor_Client.Client
                     SendResults(new ResultPackage()
                     {
                         WorkPackage = work,
+                        DurationTime = DateTime.UtcNow - startTime,
                         ModelFile = modelfile,
                         PredictionFile = predictionfile
                     });
