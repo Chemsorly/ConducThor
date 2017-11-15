@@ -6,7 +6,7 @@ WORKDIR '/root/build'
 RUN dotnet restore
 RUN dotnet publish 'ConducThor_Client/ConducThor_Client.csproj'
 
-FROM chemsorly/keras-cntk:latest-ubuntu-py2-cpu
+FROM chemsorly/keras-cntk:1.0.1-ubuntu-py2-cpu
 SHELL ["/bin/bash", "-c"]
 
 ARG CONDUCTHOR_VERSION
