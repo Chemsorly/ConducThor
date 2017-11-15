@@ -97,16 +97,16 @@ namespace ConducThor_Server
                 });
             };
             _core.NewConsoleLogMessage += delegate(Client pClient, string message)
+            {
+                dispatcher.Invoke(() =>
                 {
-                    dispatcher.Invoke(() =>
+                    var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
+                    if (client != null && !String.IsNullOrWhiteSpace(message))
                     {
-                        var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
-                        if (client != null && !String.IsNullOrWhiteSpace(message))
-                        {
-                            client.LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
-                        }
-                    });
-                };
+                        client.LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                    }
+                });
+            };
 
             _core.Initialize();
 

@@ -75,22 +75,22 @@ namespace ConducThor_Client.Client
 
                     //run process
                     NotifyLogMessageEvent("Create process.");
+                    DateTime startTime = DateTime.UtcNow;
                     foreach (var command in work.Commands)
                     {
                         NotifyLogMessageEvent($"[DEBUG] Create process for: {command.FileName} {command.Arguments} {command.WorkDir}");
-                        Task.Factory.StartNew(() =>
+                        var startInfo = new ProcessStartInfo()
                         {
-                            var StartInfo = new ProcessStartInfo()
-                            {
-                                FileName = command.FileName,
-                                WorkingDirectory = command.WorkDir,
-                                Arguments = command.Arguments,
-                                RedirectStandardOutput = true,
-                                RedirectStandardInput = true,
-                                RedirectStandardError = true,
-                                UseShellExecute = false
-                            };
-                            var process = new Process { StartInfo = StartInfo };
+                            FileName = command.FileName,
+                            WorkingDirectory = command.WorkDir,
+                            Arguments = command.Arguments,
+                            RedirectStandardOutput = true,
+                            RedirectStandardInput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false
+                        };
+                        using (var process = new Process {StartInfo = startInfo})
+                        {
                             process.OutputDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
                             process.ErrorDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
                             NotifyLogMessageEvent($"[DEBUG] Starting process for: {command.FileName} {command.Arguments} {command.WorkDir}");
@@ -99,8 +99,7 @@ namespace ConducThor_Client.Client
                             process.BeginErrorReadLine();
                             process.WaitForExit();
                             NotifyLogMessageEvent($"[DEBUG] Finished process for: {command.FileName} {command.Arguments} {command.WorkDir}");
-                            process.Dispose();
-                        }).Wait();
+                        }
                     }
                     NotifyLogMessageEvent("Process finished.");
 
@@ -112,6 +111,7 @@ namespace ConducThor_Client.Client
                     SendResults(new ResultPackage()
                     {
                         WorkPackage = work,
+                        DurationTime = DateTime.UtcNow - startTime,
                         ModelFile = modelfile,
                         PredictionFile = predictionfile
                     });

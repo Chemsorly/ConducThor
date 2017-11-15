@@ -64,7 +64,7 @@ namespace ConducThor_Server.Utility
         public void Execute(object parameter)
         {
             if (this.CreateTask)
-                System.Threading.Tasks.Task.Factory.StartNew(() => _execute(parameter));
+                System.Threading.Tasks.Task.Run(() => _execute(parameter));
             else
                 _execute(parameter);
         }
