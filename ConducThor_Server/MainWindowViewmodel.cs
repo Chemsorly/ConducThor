@@ -23,8 +23,8 @@ namespace ConducThor_Server
         public ObservableCollection<ClientViewmodel> ClientList { get; set; }
         private Dispatcher dispatcher;
 
-        private List<String> LogMessages = new List<string>();
-        public String Log => String.Join("\n", LogMessages);
+        private Queue<String> LogMessages = new Queue<string>();
+        public String Log => String.Join("\n", LogMessages.Reverse());
 
         private ClientViewmodel _selectedClient;
         public ClientViewmodel SelectedClient
@@ -90,7 +90,11 @@ namespace ConducThor_Server
                 {
                     if (message != null)
                     {
-                        LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                        //max log limit 1000
+                        if (LogMessages.Count > 1000)
+                            LogMessages.Dequeue();
+
+                        LogMessages.Enqueue($"[{DateTime.UtcNow:G}] {message}");
                         NotifyPropertyChanged(nameof(Log));
                     }
                 });
