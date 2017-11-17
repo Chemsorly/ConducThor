@@ -112,6 +112,7 @@ namespace ConducThor_Client.Client
                     {
                         WorkPackage = work,
                         DurationTime = DateTime.UtcNow - startTime,
+                        ClientStatusAtEnd = _clientStatus,
                         ModelFile = modelfile,
                         PredictionFile = predictionfile
                     });

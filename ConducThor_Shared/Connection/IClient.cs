@@ -7,9 +7,6 @@ namespace ConducThor_Shared.Connection
 {
     public interface IClient
     {
-        /// <summary>
-        /// todo remove
-        /// </summary>
-        void Ping();
+
     }
 }

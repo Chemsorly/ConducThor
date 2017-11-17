@@ -23,8 +23,8 @@ namespace ConducThor_Server
         public ObservableCollection<ClientViewmodel> ClientList { get; set; }
         private Dispatcher dispatcher;
 
-        private List<String> LogMessages = new List<string>();
-        public String Log => String.Join("\n", LogMessages);
+        private Queue<String> LogMessages = new Queue<string>();
+        public String Log => String.Join("\n", LogMessages.Reverse());
 
         private ClientViewmodel _selectedClient;
         public ClientViewmodel SelectedClient
@@ -60,11 +60,7 @@ namespace ConducThor_Server
 
             _core.NewClientEvent += pClient =>
             {
-                dispatcher.Invoke(() =>
-                {
-                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID });
-                    NotifyPropertyChanged(nameof(ConnectedClientsString));
-                });
+                //do nothing
             };
             _core.ClientDisconnectedEvent += pClient =>
             {
@@ -79,10 +75,13 @@ namespace ConducThor_Server
                 dispatcher.Invoke(() =>
                 {
                     var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
-                    if (client != null)
+                    if (client == null)
                     {
-                        client.UpdateValues(pClient);
+                        client = new ClientViewmodel(pClient) {ID = pClient.ID};
+                        this.ClientList.Add(client);
+                        NotifyPropertyChanged(nameof(ConnectedClientsString));
                     }
+                    client.UpdateValues(pClient);
                 });
             };
             _core.NewLogMessageEvent += delegate(string message)
@@ -91,7 +90,11 @@ namespace ConducThor_Server
                 {
                     if (message != null)
                     {
-                        LogMessages.Add($"[{DateTime.UtcNow:G}] {message}");
+                        //max log limit 1000
+                        if (LogMessages.Count > 1000)
+                            LogMessages.Dequeue();
+
+                        LogMessages.Enqueue($"[{DateTime.UtcNow:G}] {message}");
                         NotifyPropertyChanged(nameof(Log));
                     }
                 });
