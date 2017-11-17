@@ -60,11 +60,7 @@ namespace ConducThor_Server
 
             _core.NewClientEvent += pClient =>
             {
-                dispatcher.Invoke(() =>
-                {
-                    this.ClientList.Add(new ClientViewmodel(pClient) {ID = pClient.ID });
-                    NotifyPropertyChanged(nameof(ConnectedClientsString));
-                });
+                //do nothing
             };
             _core.ClientDisconnectedEvent += pClient =>
             {
@@ -79,10 +75,13 @@ namespace ConducThor_Server
                 dispatcher.Invoke(() =>
                 {
                     var client = this.ClientList.FirstOrDefault(t => t.ID == pClient.ID);
-                    if (client != null)
+                    if (client == null)
                     {
-                        client.UpdateValues(pClient);
+                        client = new ClientViewmodel(pClient) {ID = pClient.ID};
+                        this.ClientList.Add(client);
+                        NotifyPropertyChanged(nameof(ConnectedClientsString));
                     }
+                    client.UpdateValues(pClient);
                 });
             };
             _core.NewLogMessageEvent += delegate(string message)
