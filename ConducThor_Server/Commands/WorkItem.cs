@@ -73,14 +73,14 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python train_c2k_experiment.py {paras}\"",
+                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u train_c2k_experiment.py {paras}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
                             Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python make_predictions_c2k.py\"",
+                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u make_predictions_c2k.py\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
                             Parameters = paras
                         },
@@ -104,14 +104,14 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "python",
-                            Arguments = $"train_c2k_experiment.py {paras}",
+                            Arguments = $"-u train_c2k_experiment.py {paras}",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
                             Parameters = paras
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "python",
-                            Arguments = $"make_predictions_c2k.py",
+                            Arguments = $"-u make_predictions_c2k.py",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
                             Parameters = paras
                         }
