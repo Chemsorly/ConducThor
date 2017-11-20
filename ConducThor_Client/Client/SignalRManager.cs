@@ -116,7 +116,7 @@ namespace ConducThor_Client.Client
                         PredictionFile = predictionfile,
                         MachineData = _machineData
                     });
-                    NotifyLogMessageEvent($"[DEBUG] Finished reading file testfile.test");
+                    NotifyLogMessageEvent($"[DEBUG] Finished reading file modelfile");
 
                 }
                 catch (Exception e)
