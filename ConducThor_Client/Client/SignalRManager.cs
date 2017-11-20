@@ -113,7 +113,8 @@ namespace ConducThor_Client.Client
                         DurationTime = DateTime.UtcNow - startTime,
                         ClientStatusAtEnd = _clientStatus,
                         ModelFile = modelfile,
-                        PredictionFile = predictionfile
+                        PredictionFile = predictionfile,
+                        MachineData = _machineData
                     });
                     NotifyLogMessageEvent($"[DEBUG] Finished reading file testfile.test");
 
