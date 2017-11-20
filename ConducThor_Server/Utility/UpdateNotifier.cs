@@ -43,10 +43,10 @@ namespace ConducThor_Server.Utility
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            timer.Stop();
             if (processing)
                 return;
 
+            timer.Stop();
             processing = true;
             try
             {

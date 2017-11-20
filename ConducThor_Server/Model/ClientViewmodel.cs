@@ -105,6 +105,7 @@ namespace ConducThor_Server.Model
             LastEpochDuration = pClient.LastEpochDuration;
             CurrentEpoch = pClient.CurrentEpoch;
             CurrentWorkParameters = pClient.CurrentWorkParameters;
+            MachineName = pClient.MachineName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

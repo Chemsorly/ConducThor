@@ -14,8 +14,14 @@ namespace ConducThor_Client.Machine
             {
                 ContainerVersion = GetContainerVersion(),
                 OperatingSystem = GetOperatingSystem(),
-                ProcessingUnit = GetProcessingUnitType()
+                ProcessingUnit = GetProcessingUnitType(),
+                Name = GetContainerName()
             };
+        }
+
+        static String GetContainerName()
+        {
+            return System.Net.Dns.GetHostName();
         }
 
         static OSEnum GetOperatingSystem()
