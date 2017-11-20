@@ -85,16 +85,15 @@ namespace ConducThor_Client.Client
                             WorkingDirectory = command.WorkDir,
                             Arguments = command.Arguments,
                             RedirectStandardOutput = true,
-                            RedirectStandardInput = true,
+                            RedirectStandardInput = false,
                             RedirectStandardError = true,
                             UseShellExecute = false
                         };
-                        using (var process = new Process {StartInfo = startInfo})
+                        using (var process = Process.Start(startInfo))
                         {
                             process.OutputDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
                             process.ErrorDataReceived += (sender, args) => NotifyLogMessageEvent(args.Data);
                             NotifyLogMessageEvent($"[DEBUG] Starting process for: {command.FileName} {command.Arguments} {command.WorkDir}");
-                            process.Start();
                             process.BeginOutputReadLine();
                             process.BeginErrorReadLine();
                             process.WaitForExit();
