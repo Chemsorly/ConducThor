@@ -85,7 +85,7 @@ namespace ConducThor_Client.Client
                             WorkingDirectory = command.WorkDir,
                             Arguments = command.Arguments,
                             RedirectStandardOutput = true,
-                            RedirectStandardInput = true,
+                            RedirectStandardInput = false,
                             RedirectStandardError = true,
                             UseShellExecute = false
                         };
