@@ -50,6 +50,7 @@ namespace ConducThor_Server.Server
                     client.ContainerVersion = data.ContainerVersion;
                     client.OperatingSystem = data.OperatingSystem;
                     client.ProcessingUnit = data.ProcessingUnit;
+                    client.MachineName = data.Name;
                     NotifyClientUpdatedEvent(client);
                 }
             };
