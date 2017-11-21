@@ -24,6 +24,7 @@ namespace ConducThor_Server.Model
         private String _lastEpochDuration = String.Empty;
         private int _currentEpoch = 0;
         private String _currentWorkParameters = String.Empty;
+        private DateTime _lastUpdate = DateTime.MinValue;
 
         public ClientViewmodel(Client pClient)
         {
@@ -96,6 +97,12 @@ namespace ConducThor_Server.Model
             }
         }
 
+        public DateTime LastUpdate
+        {
+            get => _lastUpdate;
+            set { _lastUpdate = value; OnPropertyChanged(); }
+        }
+
         public void UpdateValues(Client pClient)
         {
             ContainerVersion = pClient.ContainerVersion;
@@ -106,6 +113,7 @@ namespace ConducThor_Server.Model
             CurrentEpoch = pClient.CurrentEpoch;
             CurrentWorkParameters = pClient.CurrentWorkParameters;
             MachineName = pClient.MachineName;
+            _lastUpdate = DateTime.UtcNow;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
