@@ -27,6 +27,13 @@ namespace ConducThor_Server.Commands
 
         public bool VerifyAndSave(ResultPackage pResults)
         {
+            //check for integrity (aka byte size)
+            if (pResults.ModelFile.Length < 700000 || pResults.PredictionFile.Length < 1500000)
+            {
+                NotifyNewLogMessageEvent($"[ERROR] Received invalid results for {pResults.WorkPackage.Commands.First().Parameters}: Model File or Result File too small");
+            }
+
+            //check if already exist
             if (_filesystemManager.CheckIfFileExists(pResults.WorkPackage.Commands.First().Parameters))
             {
                 NotifyNewLogMessageEvent($"[ERROR] Attempting to write duplicate file for {pResults.WorkPackage.Commands.First().Parameters}");
