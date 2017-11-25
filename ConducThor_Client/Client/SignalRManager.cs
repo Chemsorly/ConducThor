@@ -30,7 +30,7 @@ namespace ConducThor_Client.Client
 
         private Timer _pollTimer;
         private bool IsWorking = false;
-        private ClientStatus _clientStatus = new ClientStatus();
+        private readonly ClientStatus _clientStatus = new ClientStatus();
 
         public SignalRManager(MachineData pMachineData)
         {
@@ -215,11 +215,8 @@ namespace ConducThor_Client.Client
                 int value;
                 if (int.TryParse(matches[0].Value, out value))
                 {
-                    if (value > _clientStatus.CurrentEpoch)
-                    {
-                        _clientStatus.CurrentEpoch = value;
-                        SendStatusUpdate(_clientStatus);
-                    }
+                    _clientStatus.CurrentEpoch = value;
+                    SendStatusUpdate(_clientStatus);
                 }
                 
             }
