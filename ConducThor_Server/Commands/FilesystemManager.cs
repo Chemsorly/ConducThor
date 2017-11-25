@@ -78,7 +78,7 @@ namespace ConducThor_Server.Commands
                 var xmlserializer = new XmlSerializer(typeof(MetaStruct));
                 xmlserializer.Serialize(filestream,new MetaStruct
                 {
-                    Duration = pResults.DurationTime,
+                    Duration = $"{pResults.DurationTime.TotalSeconds}s",
                     Epochs = pResults.ClientStatusAtEnd.CurrentEpoch,
                     LastEpochDuration = pResults.ClientStatusAtEnd.LastEpochDuration,
                     NodeName = pResults.MachineData.Name,
@@ -119,7 +119,7 @@ namespace ConducThor_Server.Commands
     }
     public class MetaStruct
     {
-        public TimeSpan Duration { get; set; }
+        public String Duration { get; set; }
         public int Epochs { get; set; }
         public String LastEpochDuration { get; set; }
         public String NodeName { get; set; }
