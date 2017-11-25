@@ -117,7 +117,7 @@ namespace ConducThor_Server.Commands
             return pParameters.Replace(",", ".");
         }
 
-        struct MetaStruct
+        public struct MetaStruct
         {
             public TimeSpan Duration { get; set; }
             public int Epochs { get; set; }
