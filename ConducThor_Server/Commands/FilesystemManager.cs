@@ -116,16 +116,15 @@ namespace ConducThor_Server.Commands
         {
             return pParameters.Replace(",", ".");
         }
-
-        public struct MetaStruct
-        {
-            public TimeSpan Duration { get; set; }
-            public int Epochs { get; set; }
-            public String LastEpochDuration { get; set; }
-            public String NodeName { get; set; }
-            public String Version { get; set; }
-            public String OS { get; set; }
-            public String ProcessingUnit { get; set; }
-        }
+    }
+    public class MetaStruct
+    {
+        public TimeSpan Duration { get; set; }
+        public int Epochs { get; set; }
+        public String LastEpochDuration { get; set; }
+        public String NodeName { get; set; }
+        public String Version { get; set; }
+        public String OS { get; set; }
+        public String ProcessingUnit { get; set; }
     }
 }
