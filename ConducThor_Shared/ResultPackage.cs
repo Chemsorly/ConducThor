@@ -12,5 +12,6 @@ namespace ConducThor_Shared
         public MachineData MachineData { get; set; }
         public byte[] ModelFile { get; set; }
         public byte[] PredictionFile { get; set; }
+        public List<String> OutLog { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -31,6 +33,8 @@ namespace ConducThor_Client.Client
         private Timer _pollTimer;
         private bool IsWorking = false;
         private readonly ClientStatus _clientStatus = new ClientStatus();
+
+        private ConcurrentQueue<String> SavedLog = new ConcurrentQueue<string>();
 
         public SignalRManager(MachineData pMachineData)
         {
@@ -73,6 +77,8 @@ namespace ConducThor_Client.Client
                     _clientStatus.CurrentWorkParameters = work.Commands.First().Parameters;
                     SendStatusUpdate(_clientStatus);
 
+                    //create log
+
                     //run process
                     NotifyLogMessageEvent("Create process.");
                     DateTime startTime = DateTime.UtcNow;
@@ -114,7 +120,8 @@ namespace ConducThor_Client.Client
                         ClientStatusAtEnd = _clientStatus,
                         ModelFile = modelfile,
                         PredictionFile = predictionfile,
-                        MachineData = _machineData
+                        MachineData = _machineData,
+                        OutLog = FlushLog(this.SavedLog)
                     });
                     NotifyLogMessageEvent($"[DEBUG] Finished reading file modelfile");
 
@@ -192,6 +199,9 @@ namespace ConducThor_Client.Client
         {
             if (!String.IsNullOrWhiteSpace(pLogMessage))
             {
+                //add to saved log
+                SavedLog.Enqueue(pLogMessage);
+
                 //check for special messages
                 CheckForStatusMessages(pLogMessage);
 
@@ -267,6 +277,17 @@ namespace ConducThor_Client.Client
             }
         }
 
+        private static List<String> FlushLog(ConcurrentQueue<String> pLog)
+        {
+            List<String> outlog = new List<string>();
+            while (!pLog.IsEmpty)
+            {
+                String item;
+                pLog.TryDequeue(out item);
+                outlog.Add(item);
+            }
+            return outlog;
+        }
         #endregion
 
 
