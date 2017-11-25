@@ -22,7 +22,7 @@ namespace ConducThor_Server.Utility
         public VersionStatus Status
         {
             get { return _status; }
-            private set { _status = value; OnPropertyChanged("Status"); }
+            private set { _status = value; OnPropertyChanged("VersionStatus"); }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
