@@ -61,8 +61,7 @@ namespace ConducThor_Server.Server
                 {
                     client.IsWorking = status.IsWorking;
                     client.LastEpochDuration = status.LastEpochDuration;
-                    if(status.CurrentEpoch > client.CurrentEpoch)
-                        client.CurrentEpoch = status.CurrentEpoch;
+                    client.CurrentEpoch = status.CurrentEpoch;
                     client.CurrentWorkParameters = status.CurrentWorkParameters;
                     NotifyClientUpdatedEvent(client);
                 }

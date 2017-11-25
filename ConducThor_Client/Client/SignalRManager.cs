@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -30,7 +32,9 @@ namespace ConducThor_Client.Client
 
         private Timer _pollTimer;
         private bool IsWorking = false;
-        private ClientStatus _clientStatus = new ClientStatus();
+        private readonly ClientStatus _clientStatus = new ClientStatus();
+
+        private ConcurrentQueue<String> SavedLog = new ConcurrentQueue<string>();
 
         public SignalRManager(MachineData pMachineData)
         {
@@ -73,6 +77,8 @@ namespace ConducThor_Client.Client
                     _clientStatus.CurrentWorkParameters = work.Commands.First().Parameters;
                     SendStatusUpdate(_clientStatus);
 
+                    //create log
+
                     //run process
                     NotifyLogMessageEvent("Create process.");
                     DateTime startTime = DateTime.UtcNow;
@@ -113,9 +119,11 @@ namespace ConducThor_Client.Client
                         DurationTime = DateTime.UtcNow - startTime,
                         ClientStatusAtEnd = _clientStatus,
                         ModelFile = modelfile,
-                        PredictionFile = predictionfile
+                        PredictionFile = predictionfile,
+                        MachineData = _machineData,
+                        OutLog = FlushLog(this.SavedLog)
                     });
-                    NotifyLogMessageEvent($"[DEBUG] Finished reading file testfile.test");
+                    NotifyLogMessageEvent($"[DEBUG] Finished reading file modelfile");
 
                 }
                 catch (Exception e)
@@ -191,6 +199,9 @@ namespace ConducThor_Client.Client
         {
             if (!String.IsNullOrWhiteSpace(pLogMessage))
             {
+                //add to saved log
+                SavedLog.Enqueue(pLogMessage);
+
                 //check for special messages
                 CheckForStatusMessages(pLogMessage);
 
@@ -214,11 +225,8 @@ namespace ConducThor_Client.Client
                 int value;
                 if (int.TryParse(matches[0].Value, out value))
                 {
-                    if (value > _clientStatus.CurrentEpoch)
-                    {
-                        _clientStatus.CurrentEpoch = value;
-                        SendStatusUpdate(_clientStatus);
-                    }
+                    _clientStatus.CurrentEpoch = value;
+                    SendStatusUpdate(_clientStatus);
                 }
                 
             }
@@ -269,6 +277,17 @@ namespace ConducThor_Client.Client
             }
         }
 
+        private static List<String> FlushLog(ConcurrentQueue<String> pLog)
+        {
+            List<String> outlog = new List<string>();
+            while (!pLog.IsEmpty)
+            {
+                String item;
+                pLog.TryDequeue(out item);
+                outlog.Add(item);
+            }
+            return outlog;
+        }
         #endregion
 
 
