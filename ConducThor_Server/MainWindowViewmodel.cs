@@ -56,7 +56,7 @@ namespace ConducThor_Server
             dispatcher = Dispatcher.CurrentDispatcher;
             ClientList = new ObservableCollection<ClientViewmodel>();
             _core = new Core();
-            _core.PropertyChanged += (sender, args) => PropertyChanged?.Invoke(sender, args);
+            _core.PropertyChanged += (sender, args) => NotifyPropertyChanged(args.PropertyName);
 
             _core.NewClientEvent += pClient =>
             {
