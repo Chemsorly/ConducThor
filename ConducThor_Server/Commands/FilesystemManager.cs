@@ -88,6 +88,9 @@ namespace ConducThor_Server.Commands
                 });
                 filestream.Close();
             }
+            //write logfile
+            File.WriteAllLines(System.IO.Path.Combine(ResultPath, parameters, GetLogFilenameFromParameters(parameters)), pResults.OutLog);
+
             NotifyNewLogMessageEvent($"Saved results to file for {parameters}");
         }
 
@@ -103,6 +106,10 @@ namespace ConducThor_Server.Commands
         private String GetMetaFilenameFromParameters(String pParameters)
         {
             return $"meta-{pParameters}.xml";
+        }
+        private String GetLogFilenameFromParameters(String pParameters)
+        {
+            return $"log-{pParameters}.txt";
         }
 
         private String CleanParameters(String pParameters)
