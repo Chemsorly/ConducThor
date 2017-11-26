@@ -67,7 +67,13 @@ namespace ConducThor_Server.Commands
 
         public void SendResults(ResultPackage pResults)
         {
-            _resultManager.VerifyAndSave(pResults);
+            //if save results have been successfully saved, remove item from active operations
+            if (_resultManager.VerifyAndSave(pResults))
+            {
+                var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters);
+                if (workitem != null)
+                    ActiveWorkItems.Remove(workitem);
+            }
         }
 
         private void AddNewWorkItem(String pParameters)
