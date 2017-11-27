@@ -28,7 +28,7 @@ namespace ConducThor_Server.Commands
         public bool VerifyAndSave(ResultPackage pResults)
         {
             //check for integrity (aka byte size)
-            if (pResults.ModelFile.Length < 700000 || pResults.PredictionFile.Length < 1500000)
+            if (pResults.ModelFile.Length < 450000 || pResults.PredictionFile.Length < 1500000)
             {
                 NotifyNewLogMessageEvent($"[ERROR] Received invalid results for {pResults.WorkPackage.Commands.First().Parameters}: Model File or Result File too small");
                 return false;
