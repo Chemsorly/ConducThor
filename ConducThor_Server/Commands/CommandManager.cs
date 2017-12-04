@@ -71,12 +71,12 @@ namespace ConducThor_Server.Commands
             if (_resultManager.VerifyAndSave(pResults))
             {
                 //remove from active
-                var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters);
+                var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.',','));
                 if (workitem != null)
                     ActiveWorkItems.Remove(workitem);
 
                 //(edge case): remove from queued (e.g. restarting server)
-                var queueitem = QueuedWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters);
+                var queueitem = QueuedWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.', ','));
                 if (queueitem != null)
                     QueuedWorkItems.Remove(queueitem);
             }
