@@ -70,15 +70,23 @@ namespace ConducThor_Server.Commands
             //if save results have been successfully saved, remove item from active operations
             if (_resultManager.VerifyAndSave(pResults))
             {
+                NotifyNewLogMessageEvent($"Attempt to remove \"{pResults.WorkPackage.Commands.First().Parameters.Replace('.', ',')}\" from queue.");
+
                 //remove from active
                 var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.',','));
                 if (workitem != null)
+                {
                     ActiveWorkItems.Remove(workitem);
+                    NotifyNewLogMessageEvent($"Removed {workitem.Parameters} from active work.");
+                }
 
                 //(edge case): remove from queued (e.g. restarting server)
                 var queueitem = QueuedWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.', ','));
                 if (queueitem != null)
+                {
                     QueuedWorkItems.Remove(queueitem);
+                    NotifyNewLogMessageEvent($"Removed {queueitem.Parameters} from queue.");
+                }
             }
         }
 
