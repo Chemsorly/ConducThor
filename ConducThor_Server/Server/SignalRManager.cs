@@ -118,7 +118,7 @@ namespace ConducThor_Server.Server
         private void NotifyClientUpdatedEvent(Client pClient)
         {
             ClientUpdatedEvent?.Invoke(pClient);
-            NotifyNewLogMessageEvent($"CONNECT: {pClient.ID}");
+            //NotifyNewLogMessageEvent($"CONNECT: {pClient.ID}");
         }
 
         private void NewClientLogMessageEvent(string pClientID, string pLogMessage)
