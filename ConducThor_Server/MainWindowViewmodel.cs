@@ -136,7 +136,7 @@ namespace ConducThor_Server
                 new List<double>()
                     {0.05,0.1,0.15,0.2 },
                 new List<double>()
-                    {20,40,60,80 },
+                    {80 },
                 new List<double>()
                     {1,2,3,4,5,6,7 },
             };
