@@ -125,7 +125,32 @@ namespace ConducThor_Server
             List<List<String>> parameterslist = new List<List<String>>()
             {
                 new List<String>()
-                    {"systemtest.py"},
+                    {
+                        "aio_binary_s2e.py",
+                        "aio_binary_s2e_nopath.py",
+                        "aio_binary_s2e_noplanned.py",
+                        "aio_binary_s2e_noplanned_nopath.py",
+                        "aio_binary_s2e_rgb.py",
+                        "aio_binary_s2e_rgb_noplanned.py",
+                        "aio_binary_s2s.py",
+                        "aio_binary_s2s_nopath.py",
+                        "aio_binary_s2s_noplanned.py",
+                        "aio_binary_s2s_noplanned_nopath.py",
+                        "aio_binary_s2s_rgb.py",
+                        "aio_binary_s2s_rgb_noplanned.py",
+                        "aio_numeric_s2e.py",
+                        "aio_numeric_s2e_nopath.py",
+                        "aio_numeric_s2e_noplanned.py",
+                        "aio_numeric_s2e_noplanned_nopath.py",
+                        "aio_numeric_s2e_rgb.py",
+                        "aio_numeric_s2e_rgb_noplanned.py",
+                        "aio_numeric_s2s.py",
+                        "aio_numeric_s2s_nopath.py",
+                        "aio_numeric_s2s_noplanned.py",
+                        "aio_numeric_s2s_noplanned_nopath.py",
+                        "aio_numeric_s2s_rgb.py",
+                        "aio_numeric_s2s_rgb_noplanned.py"
+                    },
                 new List<String>()
                     {"1","2","3","4","5","6","7","8","9","10"},
                 new List<String>()
