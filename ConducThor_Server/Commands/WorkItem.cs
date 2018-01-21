@@ -55,8 +55,6 @@ namespace ConducThor_Server.Commands
         private WorkPackage CreateWorkPackage(OSEnum pOS, String pParameter)
         {
             //clean
-            var paras = pParameter.Replace(",", ".");
-
             if (pOS == OSEnum.Ubuntu)
                 return new WorkPackage()
                 {
@@ -68,25 +66,21 @@ namespace ConducThor_Server.Commands
                             FileName = "/bin/bash",
                             Arguments = "-c \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
                             WorkDir = "/root/app",
-                            Parameters = paras
+                            Parameters = pParameter
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u train_c2k_experiment_rgb_endduration.py {paras}\"",
+                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u {pParameter}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
-                            Parameters = paras
-                        },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u evaluate_next_activity_cascade_results_c2k_rgb_endduration.py\"",
-                            WorkDir = "/root/app/MA-C2K-LSTM/code",
-                            Parameters = paras
-                        },
+                            Parameters = pParameter
+                        }
                     },
-                    TargetModelFile = new List<string>() { "MA-C2K-LSTM","code", "output_files", "models", "model-latest.h5"},
-                    TargetPredictionFile = new List<string>() { "MA-C2K-LSTM","code", "output_files", "results", "results.csv"}
+                    TargetFiles = new List<List<string>>()
+                    {
+                        new List<string>() { "MA-C2K-LSTM","code", "output_files", "models", "model-latest.h5"},
+                        new List<string>() { "MA-C2K-LSTM","code", "output_files", "results", "results.csv"}
+                    }
                 };
             if (pOS == OSEnum.Windows)
                 return new WorkPackage()
@@ -99,25 +93,21 @@ namespace ConducThor_Server.Commands
                             FileName = "cmd",
                             Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
                             WorkDir = "C:\\app\\",
-                            Parameters = paras
+                            Parameters = pParameter
                         },
                         new WorkPackage.Command()
                         {
                             FileName = "python",
-                            Arguments = $"-u train_c2k_experiment_rgb_endduration.py {paras}",
+                            Arguments = $"-u {pParameter}",
                             WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
-                            Parameters = paras
-                        },
-                        new WorkPackage.Command()
-                        {
-                            FileName = "python",
-                            Arguments = $"-u evaluate_next_activity_cascade_results_c2k_rgb_endduration.py",
-                            WorkDir = "C:\\app\\MA-C2K-LSTM\\code",
-                            Parameters = paras
+                            Parameters = pParameter
                         }
                     },
-                    TargetModelFile = new List<string>() { "MA-C2K-LSTM", "code", "output_files", "models", "model-latest.h5" },
-                    TargetPredictionFile = new List<string>() { "MA-C2K-LSTM", "code", "output_files", "results", "results.csv" }
+                    TargetFiles = new List<List<string>>()
+                    {
+                        new List<string>() { "MA-C2K-LSTM","code", "output_files", "models", "model-latest.h5"},
+                        new List<string>() { "MA-C2K-LSTM","code", "output_files", "results", "results.csv"}
+                    }
                 };
             return null;
         }

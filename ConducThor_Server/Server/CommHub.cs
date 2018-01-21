@@ -79,7 +79,7 @@ namespace ConducThor_Server.Server
         public void SendResults(ResultPackage pResults)
         {
             //debug
-            NewLogMessageEvent?.Invoke($"Result files received from {this.Context.ConnectionId} with {pResults.ModelFile.Length} and {pResults.PredictionFile.Length} bytes");
+            NewLogMessageEvent?.Invoke($"Result files received from {this.Context.ConnectionId} with {pResults.ResultFiles.Sum(t => t.FileData.Length)} bytes in {pResults.ResultFiles.Count} files");
             ResultsReceivedEvent?.Invoke(pResults, this.Context.ConnectionId);
         }
 

@@ -29,7 +29,7 @@ namespace ConducThor_Server.Commands
             base.Initialize();
         }
 
-        public void CreateWorkParameters(List<List<double>> pCombinations)
+        public void CreateWorkParameters(List<List<String>> pCombinations)
         {
             NotifyNewLogMessageEvent("Create new set of work parameters.");
             var combinations = CombinationHelper.AllCombinationsOf(pCombinations.ToArray());
@@ -70,10 +70,10 @@ namespace ConducThor_Server.Commands
             //if save results have been successfully saved, remove item from active operations
             if (_resultManager.VerifyAndSave(pResults))
             {
-                NotifyNewLogMessageEvent($"Attempt to remove \"{pResults.WorkPackage.Commands.First().Parameters.Replace('.', ',')}\" from queue.");
+                NotifyNewLogMessageEvent($"Attempt to remove \"{pResults.WorkPackage.Commands.First().Parameters}\" from queue.");
 
                 //remove from active
-                var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.',','));
+                var workitem = ActiveWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters);
                 if (workitem != null)
                 {
                     ActiveWorkItems.Remove(workitem);
@@ -81,7 +81,7 @@ namespace ConducThor_Server.Commands
                 }
 
                 //(edge case): remove from queued (e.g. restarting server)
-                var queueitem = QueuedWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters.Replace('.', ','));
+                var queueitem = QueuedWorkItems.FirstOrDefault(t => t.Parameters == pResults.WorkPackage.Commands.First().Parameters);
                 if (queueitem != null)
                 {
                     QueuedWorkItems.Remove(queueitem);
