@@ -109,17 +109,26 @@ namespace ConducThor_Client.Client
                     NotifyLogMessageEvent("Process finished.");
 
                     //get results
-                    NotifyLogMessageEvent($"[DEBUG] Read target model file");
-                    var modelfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetModelFile.ToArray()));
-                    var predictionfile = System.IO.File.ReadAllBytes(System.IO.Path.Combine(work.TargetPredictionFile.ToArray()));
-                    NotifyLogMessageEvent($"[DEBUG] {modelfile.Length} bytes");
+                    NotifyLogMessageEvent($"[DEBUG] Read target files");
+                    List<ResultPackage.File> resultFiles = new List<ResultPackage.File>();
+                    foreach (var pathlist in work.TargetFiles)
+                    {
+                        var path = System.IO.Path.Combine(pathlist.ToArray());
+                        var filename = System.IO.Path.GetFileName(path);
+                        var bytes = System.IO.File.ReadAllBytes(path);
+
+                        resultFiles.Add(new ResultPackage.File()
+                        {
+                            FileData = bytes,
+                            Filename = filename
+                        });
+                    }
                     SendResults(new ResultPackage()
                     {
                         WorkPackage = work,
                         DurationTime = DateTime.UtcNow - startTime,
                         ClientStatusAtEnd = _clientStatus,
-                        ModelFile = modelfile,
-                        PredictionFile = predictionfile,
+                        ResultFiles = resultFiles,
                         MachineData = _machineData,
                         OutLog = FlushLog(this.SavedLog)
                     });

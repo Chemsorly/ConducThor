@@ -66,12 +66,10 @@ namespace ConducThor_Server.Commands
             //create dir 
             System.IO.Directory.CreateDirectory(System.IO.Path.Combine(ResultPath, parameters));
 
-            //write model-file
-            System.IO.File.WriteAllBytes(System.IO.Path.Combine(ResultPath, parameters, GetModelFilenameFromParameters(parameters)), 
-                pResults.ModelFile);
-            //write predictions-file
-            System.IO.File.WriteAllBytes(System.IO.Path.Combine(ResultPath, parameters, GetPredictionFilenameFromParameters(parameters)),
-                pResults.PredictionFile);
+            //write transmitted files
+            foreach(var file in pResults.ResultFiles)
+                System.IO.File.WriteAllBytes(System.IO.Path.Combine(ResultPath, parameters, file.Filename),file.FileData);
+
             //write meta file
             using (var filestream =new FileStream(System.IO.Path.Combine(ResultPath, parameters, GetMetaFilenameFromParameters(parameters)),FileMode.CreateNew))
             {

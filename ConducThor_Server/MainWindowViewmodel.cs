@@ -121,24 +121,21 @@ namespace ConducThor_Server
         internal void GenerateWork(Object obj)
         {
             //generate work parameter combinations; hardcoded for now
-            //combinations
-            //Architektur: 1
-            //Neuronen pro Schicht 50,100,150,200
-            //Dropout 0.2, 0.4, 0.6, 0.8
-            //Patience 20, 40, 60, 80
-            //Optimierungsalgorithmus 1,2,3,4,5,6,7
-            List<List<double>> parameterslist = new List<List<double>>()
+            //needs to include the training filename as first parameteer!
+            List<List<String>> parameterslist = new List<List<String>>()
             {
-                new List<double>()
-                    {1},
-                new List<double>()
-                    {50,100,150,200 },
-                new List<double>()
-                    {0.05,0.1,0.15,0.2 },
-                new List<double>()
-                    {80 },
-                new List<double>()
-                    {1,2,3,4,5,6,7 },
+                new List<String>()
+                    {"systemtest.py"},
+                new List<String>()
+                    {"1","2","3","4","5","6","7","8","9","10"},
+                new List<String>()
+                    {"100" },
+                new List<String>()
+                    {"0.1" },
+                new List<String>()
+                    {"20" },
+                new List<String>()
+                    {"1" },
             };
             
             _core.GenerateWorkUnits(parameterslist);

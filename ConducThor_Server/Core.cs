@@ -63,7 +63,7 @@ namespace ConducThor_Server
             _commandManager.SendResults(pResults);
         }
 
-        public void GenerateWorkUnits(List<List<double>> pWorkParameters)
+        public void GenerateWorkUnits(List<List<String>> pWorkParameters)
         {
             _commandManager.CreateWorkParameters(pWorkParameters);
         }
