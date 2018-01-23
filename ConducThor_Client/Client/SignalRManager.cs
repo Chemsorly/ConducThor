@@ -44,6 +44,8 @@ namespace ConducThor_Client.Client
         public void Initialize(String pEndpoint)
         {
             _connection = new HubConnection(pEndpoint);
+            _connection.Headers.Add("authtoken", "ThisIsACustomTokenToPreventSpamBecauseFuckIt");
+
             _connection.Received += Connection_Received;
             _connection.StateChanged += delegate(StateChange obj){OnPropertyChanged(nameof(ConnectionState)); NotifyLogMessageEvent($"state changed from {obj.OldState} to {obj.NewState}"); };
             _connection.Received += delegate(String s) { NotifyLogMessageEvent(s); };
