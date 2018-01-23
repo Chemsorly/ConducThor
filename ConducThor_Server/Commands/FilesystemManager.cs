@@ -85,16 +85,6 @@ namespace ConducThor_Server.Commands
 
             NotifyNewLogMessageEvent($"Saved results to file for {parameters}");
         }
-
-        private String GetModelFilenameFromParameters(String pParameters)
-        {
-            //e.g. for pParameters: "1 3 0.2 200" => "model-1 3 0.2 200"
-            return $"model-{pParameters}.h5";
-        }
-        private String GetPredictionFilenameFromParameters(String pParameters)
-        {
-            return $"results-{pParameters}.csv";
-        }
         private String GetMetaFilenameFromParameters(String pParameters)
         {
             return $"meta-{pParameters}.xml";
