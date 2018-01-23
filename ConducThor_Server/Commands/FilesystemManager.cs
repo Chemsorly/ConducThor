@@ -41,20 +41,14 @@ namespace ConducThor_Server.Commands
             var para = CleanParameters(pParameters);
 
             //check directory
-            var dir = System.IO.Directory.Exists(System.IO.Path.Combine(ResultPath, para));
-            if (!dir)
+            var dir = System.IO.Path.Combine(ResultPath, para);
+            if (!System.IO.Directory.Exists(dir))
                 return false;
 
-            //check model pParameters
-            var file1 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, para,
-                GetModelFilenameFromParameters(para)));
-
-            //check predictions file
-            var file2 = System.IO.File.Exists(System.IO.Path.Combine(ResultPath, para,
-                GetPredictionFilenameFromParameters(para)));
-
-            if (file1 && file2)
+            //check if directory is empty
+            if (Directory.EnumerateFiles(dir).Any())
                 return true;
+
             return false;
         }
 
