@@ -26,7 +26,7 @@ namespace ConducThor_Server.Server
                 };
                 GlobalHost.DependencyResolver = hubConfiguration.Resolver;
                 GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = null;
-                GlobalHost.Configuration.DefaultMessageBufferSize = 10000;
+                GlobalHost.Configuration.DefaultMessageBufferSize = 1000;
                 map.RunSignalR(hubConfiguration);
             });
         }

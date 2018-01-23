@@ -13,6 +13,7 @@ using Microsoft.AspNet.SignalR;
 
 namespace ConducThor_Server.Server
 {
+    [TokenAuthorizationAttribute]
     public class CommHub : Hub<IClient>
     {
         static IHubContext<IClient> _context = null;
