@@ -40,6 +40,7 @@ namespace ConducThor_Server.Commands
             _timeoutTimer.Interval = TimeoutValue;
             _timeoutTimer.Elapsed += (sender, args) =>
             {
+                _timeoutTimer.Stop();
                 OnTimeoutHappenedEvent?.Invoke(this);
                 StartDate = DateTime.MinValue;
                 ClientID = String.Empty;
