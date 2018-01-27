@@ -98,6 +98,10 @@ namespace ConducThor_Server.Commands
                 //remove
                 ActiveWorkItems.Remove(sender);
 
+                //check if result items already exist; if it does, skip it
+                if (_resultManager.CheckIfResultExists(pParameters))
+                    return;
+
                 //create new
                 AddNewWorkItem(sender.Parameters);
             };
