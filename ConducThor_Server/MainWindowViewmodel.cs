@@ -126,33 +126,20 @@ namespace ConducThor_Server
             {
                 new List<String>()
                     {
-                        "aio_binary_s2e.py",
-                        "aio_binary_s2e_nopath.py",
-                        "aio_binary_s2e_noplanned.py",
-                        "aio_binary_s2e_noplanned_nopath.py",
-                        "aio_binary_s2e_rgb.py",
-                        "aio_binary_s2e_rgb_noplanned.py",
-                        "aio_binary_s2s.py",
-                        "aio_binary_s2s_nopath.py",
-                        "aio_binary_s2s_noplanned.py",
-                        "aio_binary_s2s_noplanned_nopath.py",
-                        "aio_binary_s2s_rgb.py",
-                        "aio_binary_s2s_rgb_noplanned.py",
-                        "aio_numeric_s2e.py",
-                        "aio_numeric_s2e_nopath.py",
-                        "aio_numeric_s2e_noplanned.py",
-                        "aio_numeric_s2e_noplanned_nopath.py",
-                        "aio_numeric_s2e_rgb.py",
-                        "aio_numeric_s2e_rgb_noplanned.py",
-                        "aio_numeric_s2s.py",
-                        "aio_numeric_s2s_nopath.py",
-                        "aio_numeric_s2s_noplanned.py",
-                        "aio_numeric_s2s_noplanned_nopath.py",
-                        "aio_numeric_s2s_rgb.py",
-                        "aio_numeric_s2s_rgb_noplanned.py"
+                        "aio_numeric_s2s_lrtest0002.py",
+                        "aio_numeric_s2s_lrtest0004.py",
+                        "aio_numeric_s2s_lrtest0008.py",
+                        "aio_numeric_s2s_lrtest0016.py",
+                        "aio_numeric_s2s_lrtest0032.py",
+                        "aio_numeric_s2s_lrtest0064.py",
+                        "aio_numeric_s2s_lrtest0128.py"
                     },
                 new List<String>()
-                    {"1","2","3","4","5","6","7","8","9","10"},
+                {
+                    "1","2","3","4","5","6","7","8","9","10",
+                    "11","12","13","14","15","16","17","18","19","20",
+                    "21","22","23","24","25","26","27","28","29","30"
+                },
                 new List<String>()
                     {"100" },
                 new List<String>()
