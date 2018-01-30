@@ -126,13 +126,9 @@ namespace ConducThor_Server
             {
                 new List<String>()
                     {
-                        "aio_numeric_s2s_lrtest0002.py",
-                        "aio_numeric_s2s_lrtest0004.py",
-                        "aio_numeric_s2s_lrtest0008.py",
-                        "aio_numeric_s2s_lrtest0016.py",
-                        "aio_numeric_s2s_lrtest0032.py",
-                        "aio_numeric_s2s_lrtest0064.py",
-                        "aio_numeric_s2s_lrtest0128.py"
+                        "aio_binary_s2e_onlybinaryloss.py",
+                        "aio_binary_s2e_onlytimeloss.py",
+                        "aio_numeric_s2e_onlytimeloss.py"
                     },
                 new List<String>()
                 {
