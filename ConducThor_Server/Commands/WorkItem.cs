@@ -22,7 +22,7 @@ namespace ConducThor_Server.Commands
         public DateTime StartDate { get; private set; }
 
         private System.Timers.Timer _timeoutTimer;
-        private const int TimeoutValue = 86400000; //86400s = 24h; those are ms
+        private const int TimeoutValue = 43200000; //86400s = 24h; those are ms; 43200 = 12h
 
         public WorkItem(String pParameters)
         {
