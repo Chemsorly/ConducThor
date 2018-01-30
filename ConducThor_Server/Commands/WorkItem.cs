@@ -72,6 +72,13 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
+                            Arguments = "-c \"git fetch\"",
+                            WorkDir = "/root/app/MA-C2K-LSTM",
+                            Parameters = pParameter
+                        },
+                        new WorkPackage.Command()
+                        {
+                            FileName = "/bin/bash",
                             Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u {pParameter}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
                             Parameters = pParameter
@@ -94,6 +101,13 @@ namespace ConducThor_Server.Commands
                             FileName = "cmd",
                             Arguments = "/C \"git clone https://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
                             WorkDir = "C:\\app\\",
+                            Parameters = pParameter
+                        },
+                        new WorkPackage.Command()
+                        {
+                            FileName = "/bin/bash",
+                            Arguments = "-c \"git fetch\"",
+                            WorkDir = "/root/app/MA-C2K-LSTM",
                             Parameters = pParameter
                         },
                         new WorkPackage.Command()
