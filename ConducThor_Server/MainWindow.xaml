@@ -60,6 +60,66 @@
                     </DataGrid>
                 </Grid>
             </mahapps:MetroTabItem>
+            <mahapps:MetroTabItem Header="Parameters">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >Filename</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter0List}" Style="{StaticResource AzureDataGrid}" CanUserAddRows="True"></DataGrid>
+                    </Grid>
+                    <Grid Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >1</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter1List}" Style="{StaticResource AzureDataGrid}"></DataGrid>
+                    </Grid>
+                    <Grid Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >2</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter2List}" Style="{StaticResource AzureDataGrid}"></DataGrid>
+                    </Grid>
+                    <Grid Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >3</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter3List}" Style="{StaticResource AzureDataGrid}"></DataGrid>
+                    </Grid>
+                    <Grid Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >4</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter4List}" Style="{StaticResource AzureDataGrid}"></DataGrid>
+                    </Grid>
+                    <Grid Column="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" >4</TextBlock>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Parameter5List}" Style="{StaticResource AzureDataGrid}"></DataGrid>
+                    </Grid>
+                </Grid>
+            </mahapps:MetroTabItem>
             <mahapps:MetroTabItem Header="Log">
             <Grid>
                 <TextBox Text="{Binding Log, Mode=OneWay}" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>

@@ -43,12 +43,46 @@ namespace ConducThor_Server
         public String QueuedOperationsCount => $"Queued Operations: {QueuedWorkItems?.Count}";
         public String ActiveOperationsCount => $"Active Operations: {ActiveWorkItems?.Count}";
 
+        //parameters
+        private List<List<DataGridStringItem>> ParameterList { get; set; }
+        public List<DataGridStringItem> Parameter0List { get; set; }
+        public List<DataGridStringItem> Parameter1List { get; set; }
+        public List<DataGridStringItem> Parameter2List { get; set; }
+        public List<DataGridStringItem> Parameter3List { get; set; }
+        public List<DataGridStringItem> Parameter4List { get; set; }
+        public List<DataGridStringItem> Parameter5List { get; set; }
+
         //ui
         public ICommand GenerateWorkCommand { get; set; }
 
 
         public void Initialize()
         {
+            #region plist
+            //init plist
+            ParameterList = new List<List<DataGridStringItem>>();
+            Parameter0List = new List<DataGridStringItem>()
+            {
+                new DataGridStringItem() { Value = "aio_binary_s2e_onlybinaryloss.py"},
+                new DataGridStringItem() { Value = "aio_binary_s2e_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_onlytimeloss.py"}
+            };
+            ParameterList.Add(Parameter0List);
+            Parameter1List = new List<DataGridStringItem>();
+            for(int i = 1; i <= 30; i++) Parameter1List.Add(new DataGridStringItem() { Value = i.ToString()});
+
+            ParameterList.Add(Parameter1List);
+            Parameter2List = new List<DataGridStringItem>() { new DataGridStringItem() { Value = "100" } };
+            ParameterList.Add(Parameter2List);
+            Parameter3List = new List<DataGridStringItem>() { new DataGridStringItem() { Value = "0.1" } };
+            ParameterList.Add(Parameter3List);
+            Parameter4List = new List<DataGridStringItem>() { new DataGridStringItem() { Value = "20" } };
+            ParameterList.Add(Parameter4List);
+            Parameter5List = new List<DataGridStringItem>() { new DataGridStringItem() { Value = "1" } };
+            ParameterList.Add(Parameter5List);
+
+            #endregion
+
             //ui TODO fix error when multithreaded
             this.GenerateWorkCommand = new RelayCommand<object>(GenerateWork, false);
 
@@ -120,33 +154,7 @@ namespace ConducThor_Server
 
         internal void GenerateWork(Object obj)
         {
-            //generate work parameter combinations; hardcoded for now
-            //needs to include the training filename as first parameteer!
-            List<List<String>> parameterslist = new List<List<String>>()
-            {
-                new List<String>()
-                    {
-                        "aio_binary_s2e_onlybinaryloss.py",
-                        "aio_binary_s2e_onlytimeloss.py",
-                        "aio_numeric_s2e_onlytimeloss.py"
-                    },
-                new List<String>()
-                {
-                    "1","2","3","4","5","6","7","8","9","10",
-                    "11","12","13","14","15","16","17","18","19","20",
-                    "21","22","23","24","25","26","27","28","29","30"
-                },
-                new List<String>()
-                    {"100" },
-                new List<String>()
-                    {"0.1" },
-                new List<String>()
-                    {"20" },
-                new List<String>()
-                    {"1" },
-            };
-            
-            _core.GenerateWorkUnits(parameterslist);
+            _core.GenerateWorkUnits(ParameterList.Select(t => t.Select(u => u.Value).ToList()).ToList());
         }
 
         #region INotifyPropertyChanged
@@ -159,5 +167,7 @@ namespace ConducThor_Server
               PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        public class DataGridStringItem { public String Value { get; set; } }
     }
 }
