@@ -40,7 +40,7 @@ namespace ConducThor_Server.Commands
                 var combstring = String.Join(" ", comb);
 
                 //check if result items already exist; if it does, skip this combination
-                if (_resultManager.CheckIfResultExists(combstring))
+                if (_resultManager.CheckIfResultExists(combstring) || IsAlreadyInList(combstring))
                     continue;
 
                 AddNewWorkItem(combstring);
@@ -88,6 +88,11 @@ namespace ConducThor_Server.Commands
                     NotifyNewLogMessageEvent($"Removed {queueitem.Parameters} from queue.");
                 }
             }
+        }
+
+        private bool IsAlreadyInList(String pParameters)
+        {
+            return QueuedWorkItems.Any(t => t.Parameters == pParameters) || ActiveWorkItems.Any(t => t.Parameters == pParameters);
         }
 
         private void AddNewWorkItem(String pParameters)

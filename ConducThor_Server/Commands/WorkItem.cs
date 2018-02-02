@@ -72,7 +72,14 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = "-c \"git fetch\"",
+                            Arguments = "-c \"git fetch --all\"",
+                            WorkDir = "/root/app/MA-C2K-LSTM",
+                            Parameters = pParameter
+                        },
+                        new WorkPackage.Command()
+                        {
+                            FileName = "/bin/bash",
+                            Arguments = "-c \"git pull --all\"",
                             WorkDir = "/root/app/MA-C2K-LSTM",
                             Parameters = pParameter
                         },
@@ -106,7 +113,14 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = "-c \"git fetch\"",
+                            Arguments = "-c \"git fetch --all\"",
+                            WorkDir = "/root/app/MA-C2K-LSTM",
+                            Parameters = pParameter
+                        },
+                        new WorkPackage.Command()
+                        {
+                            FileName = "/bin/bash",
+                            Arguments = "-c \"git pull --all\"",
                             WorkDir = "/root/app/MA-C2K-LSTM",
                             Parameters = pParameter
                         },
