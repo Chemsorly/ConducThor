@@ -63,9 +63,12 @@ namespace ConducThor_Server
             ParameterList = new List<List<DataGridStringItem>>();
             Parameter0List = new List<DataGridStringItem>()
             {
-                new DataGridStringItem() { Value = "aio_binary_s2e_onlybinaryloss.py"},
-                new DataGridStringItem() { Value = "aio_binary_s2e_onlytimeloss.py"},
-                new DataGridStringItem() { Value = "aio_numeric_s2e_onlytimeloss.py"}
+                new DataGridStringItem() { Value = "aio_numeric_s2e_nopath_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_noplanned_nopath_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_noplanned_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_rgb_noplanned_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_rgb_onlytimeloss.py"}
             };
             ParameterList.Add(Parameter0List);
             Parameter1List = new List<DataGridStringItem>();
