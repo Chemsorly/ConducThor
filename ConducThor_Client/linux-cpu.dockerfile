@@ -16,32 +16,13 @@ ENV CONDUCTHOR_TYPE cpu
 ENV CONDUCTHOR_HOST ""
 
 # Install .NET Core
-RUN apt-get update && apt-get -y upgrade && apt-get -y install apt-transport-https curl gnupg
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        ca-certificates \
-        \
-    # .NET Core dependencies
-        libc6 \
-        libcurl3 \
-        libgcc1 \
-        libgssapi-krb5-2 \
-        libicu52 \
-        liblttng-ust0 \
-        libssl1.0.0 \
-        libstdc++6 \
-        libunwind8 \
-        libuuid1 \
-        zlib1g \
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-ENV DOTNET_VERSION 1.1.8
-ENV DOTNET_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/Runtime/$DOTNET_VERSION/dotnet-debian-x64.$DOTNET_VERSION.tar.gz
 
-RUN curl -SL $DOTNET_DOWNLOAD_URL --output dotnet.tar.gz \
-    && mkdir -p /usr/share/dotnet \
-    && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
-    && rm dotnet.tar.gz \
-    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+# Install .NET Core
+RUN apt-get update && apt-get -y install apt-transport-https curl
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+RUN mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+RUN apt-get update && apt-get -y install dotnet-dev-1.1.4
 
 # run app
 COPY --from=builder 'root/build/ConducThor_Client/bin/Debug/netcoreapp1.1/publish/' '/root/app'
