@@ -86,7 +86,7 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = $"-c \"source /cntk/activate-cntk && /root/anaconda3/envs/cntk-py27/bin/python -u {pParameter}\"",
+                            Arguments = $"-c \"python -u {pParameter}\"",
                             WorkDir = "/root/app/MA-C2K-LSTM/code",
                             Parameters = pParameter
                         }
