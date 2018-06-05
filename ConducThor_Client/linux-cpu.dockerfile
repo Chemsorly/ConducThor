@@ -16,8 +16,6 @@ ENV CONDUCTHOR_TYPE cpu
 ENV CONDUCTHOR_HOST ""
 
 # Install .NET Core
-
-# Install .NET Core
 RUN apt-get update && apt-get -y install apt-transport-https curl
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 RUN mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
