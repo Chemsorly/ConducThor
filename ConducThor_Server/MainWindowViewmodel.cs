@@ -63,11 +63,16 @@ namespace ConducThor_Server
             ParameterList = new List<List<DataGridStringItem>>();
             Parameter0List = new List<DataGridStringItem>()
             {
-                new DataGridStringItem() { Value = "trainandpredict_stateful.py"}
+                new DataGridStringItem() { Value = "aio_numeric_s2e_nopath_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_noplanned_nopath_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_noplanned_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_rgb_noplanned_onlytimeloss.py"},
+                new DataGridStringItem() { Value = "aio_numeric_s2e_rgb_onlytimeloss.py"}
             };
             ParameterList.Add(Parameter0List);
             Parameter1List = new List<DataGridStringItem>();
-            for(int i = 1; i <= 500; i++) Parameter1List.Add(new DataGridStringItem() { Value = i.ToString()});
+            for(int i = 1; i <= 30; i++) Parameter1List.Add(new DataGridStringItem() { Value = i.ToString()});
 
             ParameterList.Add(Parameter1List);
             Parameter2List = new List<DataGridStringItem>() { new DataGridStringItem() { Value = "100" } };
