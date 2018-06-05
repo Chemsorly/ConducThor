@@ -65,7 +65,7 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "/bin/bash",
-                            Arguments = "-c \"git clone http://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                            Arguments = "-c \"git clone http://git.chemsorly.com/Transforming-Transport/MA-C2K-LSTM.git\"",
                             WorkDir = "/root/app",
                             Parameters = pParameter
                         },
@@ -106,7 +106,7 @@ namespace ConducThor_Server.Commands
                         new WorkPackage.Command()
                         {
                             FileName = "cmd",
-                            Arguments = "/C \"git clone http://git.chemsorly.com/Chemsorly/MA-C2K-LSTM.git\"",
+                            Arguments = "/C \"git clone http://git.chemsorly.com/Transforming-Transport/MA-C2K-LSTM.git\"",
                             WorkDir = "C:\\app\\",
                             Parameters = pParameter
                         },
