@@ -20,7 +20,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install apt-transport-htt
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 RUN mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
 RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
-RUN apt-get update && apt-get -y install -f dotnet-dev-1.1.4
+RUN apt-get update && apt-get -y install dotnet-sharedframework-microsoft.netcore.app-1.1.4 dotnet-sharedframework-microsoft.netcore.app-1.0.7 dotnet-dev-1.1.4
 
 # run app
 COPY --from=builder 'root/build/ConducThor_Client/bin/Debug/netcoreapp1.1/publish/' '/root/app'
